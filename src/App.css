@@ -1,0 +1,135 @@
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.page-content {
+  padding-top: 6rem;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blinking {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeInUp {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.animate-fadeInLeft {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.animate-fadeInRight {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.animate-visible {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-visible-left {
+  animation: fadeInLeft 0.8s ease-out forwards;
+}
+
+.animate-visible-right {
+  animation: fadeInRight 0.8s ease-out forwards;
+}
+
+.blink {
+  animation: blinking 2s infinite;
+}
+
+.hero-bg {
+  background-image: url('/lovable-uploads/0f91416c-2456-46e4-87b1-7ecb5e56e922.png');
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  background-blend-mode: darken;
+}
+
+.dot-pattern-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: url('/lovable-uploads/b93b548b-6465-4fe7-a059-8134b2785c26.png');
+  background-blend-mode: overlay;
+  background-size: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
