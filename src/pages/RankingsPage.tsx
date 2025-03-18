@@ -18,6 +18,20 @@ interface Submission {
   submissionTime: string | null;
 }
 
+// Add interface for similarity match
+interface SimilarityMatch {
+  submissionId1: string;
+  submissionId2: string;
+  username1: string;
+  username2: string;
+  similarity: number;
+  language: string;
+  rank1: number;
+  rank2: number;
+  submission1Time: string | null;
+  submission2Time: string | null;
+}
+
 const RankingsPage = () => {
   const { contestId, questionId } = useParams();
   const navigate = useNavigate();
@@ -28,6 +42,7 @@ const RankingsPage = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSimilarity, setLoadingSimilarity] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:8080/api/submissions/question/${questionId}`)
@@ -127,6 +142,24 @@ const RankingsPage = () => {
     // Scroll to top when navigating to a new page
     window.scrollTo(0, 0);
   }, [currentPage]);
+
+  const handleCheckSimilarity = async (username: string) => {
+    setLoadingSimilarity(true);
+    try {
+      const response = await fetch(`http://localhost:8080/api/submissions/matches?username=${username}&questionId=${questionId}`);
+      const data: SimilarityMatch[] = await response.json();
+      
+      // Navigate to solution details with the similarity data
+      navigate(`/contest/${contestId}/question/${questionId}/solution/${username}`, {
+        state: { similarityData: data }
+      });
+    } catch (error) {
+      console.error("Error fetching similarity:", error);
+      toast.error("Failed to fetch similarity data");
+    } finally {
+      setLoadingSimilarity(false);
+    }
+  };
 
   return (
       <div className="min-h-screen bg-[#121212] text-white mt-20">
@@ -280,11 +313,12 @@ const RankingsPage = () => {
               className="bg-[#1a1a1a] border border-[#333] rounded-lg overflow-hidden mb-8"
           >
             {/* Table header - Improved grid layout with better spacing */}
-            <div className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px] bg-[#222] border-b border-[#444] py-3 px-4">
+            <div className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] bg-[#222] border-b border-[#444] py-3 px-4">
               <div className="text-[#f59f00] font-semibold">Rank</div>
               <div className="text-[#f59f00] font-semibold">Username</div>
               <div className="text-[#f59f00] font-semibold">Language</div>
               <div className="text-[#f59f00] font-semibold">Time</div>
+              <div className="text-[#f59f00] font-semibold text-center">Status</div>
             </div>
 
             {/* Mobile header */}
@@ -304,7 +338,7 @@ const RankingsPage = () => {
                   <motion.div
                     key={`${submission.username}-${submission.rank}`}
                     variants={item}
-                    className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px] py-3 px-4 items-center border-b border-[#333] last:border-0 hover:bg-[#222] transition-colors"
+                    className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center border-b border-[#333] last:border-0 hover:bg-[#222] transition-colors"
                   >
                     <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
                       #{submission.rank}
@@ -334,6 +368,21 @@ const RankingsPage = () => {
                       ) : (
                         <span className="text-gray-400">No time recorded</span>
                       )}
+                    </div>
+                    <div className="flex justify-center">
+                      <button
+                        className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors"
+                        onClick={() => handleCheckSimilarity(submission.username)}
+                        disabled={loadingSimilarity}
+                      >
+                        {loadingSimilarity ? (
+                          <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </button>
                     </div>
                   </motion.div>
                 ))}

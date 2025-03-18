@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Check, Clock, FileCode, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -31,12 +31,27 @@ interface SimilarUser {
   score: number;
 }
 
+interface SimilarityMatch {
+  submissionId1: string;
+  submissionId2: string;
+  username1: string;
+  username2: string;
+  similarity: number;
+  language: string;
+  rank1: number;
+  rank2: number;
+  submission1Time: string | null;
+  submission2Time: string | null;
+}
+
 const SolutionDetailsPage = () => {
   const { contestId, questionId, userId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeUser, setActiveUser] = useState<UserDetail | null>(null);
   const [similarUsers, setSimilarUsers] = useState<SimilarUser[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [similarityData, setSimilarityData] = useState<SimilarityMatch[]>([]);
 
   // Handle responsive layout
   useEffect(() => {
@@ -83,6 +98,12 @@ const SolutionDetailsPage = () => {
       setSimilarUsers(mockSimilarUsers);
     }, 300);
   }, [userId]);
+
+  useEffect(() => {
+    if (location.state?.similarityData) {
+      setSimilarityData(location.state.similarityData);
+    }
+  }, [location.state]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -220,42 +241,55 @@ const SolutionDetailsPage = () => {
         >
           <h2 className="text-xl font-bold mb-4 text-[#f59f00]">Similar Solutions</h2>
           <p className="text-gray-400 mb-6">
-            Users who solved this problem with similar approaches
+            Users who submitted similar solutions to this problem
           </p>
 
           <div className="bg-[#1a1a1a] border border-[#333] rounded-lg overflow-hidden">
-            <div className="grid grid-cols-[80px_1fr_100px_100px] bg-[#222] border-b border-[#444] py-3 px-4">
+            <div className="grid grid-cols-[80px_1fr_100px_120px] bg-[#222] border-b border-[#444] py-3 px-4">
               <div className="text-[#f59f00] font-semibold">Rank</div>
               <div className="text-[#f59f00] font-semibold">Username</div>
-              <div className="text-[#f59f00] font-semibold">Score</div>
-              <div className="text-[#f59f00] font-semibold text-center">Code</div>
+              <div className="text-[#f59f00] font-semibold">Language</div>
+              <div className="text-[#f59f00] font-semibold">Similarity</div>
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
-              {similarUsers.map((user, index) => (
-                  <motion.div
-                      key={user.id}
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: 0.1 * index }}
-                      className="grid grid-cols-[80px_1fr_100px_100px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
-                  >
-                    <div className="font-medium">#{user.rank}</div>
-                    <div className="font-medium truncate">{user.username}</div>
-                    <div className="text-sm">
-                      <Badge className="bg-green-500/20 text-green-400">
-                        {user.score}%
-                      </Badge>
-                    </div>
-                    <div className="flex justify-center">
-                      <CodeButton
-                          username={user.username}
-                          language={user.language}
-                          score={user.score}
-                      />
-                    </div>
-                  </motion.div>
+              {similarityData.map((match, index) => (
+                <motion.div
+                  key={match.submissionId2}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 * index }}
+                  className="grid grid-cols-[80px_1fr_100px_120px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
+                >
+                  <div className="font-medium">#{match.rank2}</div>
+                  <div className="font-medium truncate">{match.username2}</div>
+                  <div>
+                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
+                      ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                      ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                      ${match.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                      ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                    `}>
+                      {match.language}
+                    </span>
+                  </div>
+                  <div>
+                    <Badge className={`
+                      ${match.similarity > 0.9 ? 'bg-red-500/20 text-red-400' : ''}
+                      ${match.similarity > 0.7 && match.similarity <= 0.9 ? 'bg-yellow-500/20 text-yellow-400' : ''}
+                      ${match.similarity <= 0.7 ? 'bg-green-500/20 text-green-400' : ''}
+                    `}>
+                      {(match.similarity * 100).toFixed(1)}% Match
+                    </Badge>
+                  </div>
+                </motion.div>
               ))}
+              
+              {similarityData.length === 0 && (
+                <div className="py-8 text-center text-gray-400">
+                  No similar solutions found
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
