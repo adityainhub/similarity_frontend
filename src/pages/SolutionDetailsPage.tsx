@@ -253,37 +253,44 @@ const SolutionDetailsPage = () => {
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
-              {similarityData.map((match, index) => (
-                <motion.div
-                  key={match.submissionId2}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 * index }}
-                  className="grid grid-cols-[80px_1fr_100px_120px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
-                >
-                  <div className="font-medium">#{match.rank2}</div>
-                  <div className="font-medium truncate">{match.username2}</div>
-                  <div>
-                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
-                      ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
-                      ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                      ${match.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
-                      ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
-                    `}>
-                      {match.language}
-                    </span>
-                  </div>
-                  <div>
-                    <Badge className={`
-                      ${match.similarity > 0.9 ? 'bg-red-500/20 text-red-400' : ''}
-                      ${match.similarity > 0.7 && match.similarity <= 0.9 ? 'bg-yellow-500/20 text-yellow-400' : ''}
-                      ${match.similarity <= 0.7 ? 'bg-green-500/20 text-green-400' : ''}
-                    `}>
-                      {(match.similarity * 100).toFixed(1)}% Match
-                    </Badge>
-                  </div>
-                </motion.div>
-              ))}
+              {similarityData.map((match, index) => {
+                // Determine which username to display (the one that's not the searched user)
+                const isUser1Searched = match.username1 === userId;
+                const displayUsername = isUser1Searched ? match.username2 : match.username1;
+                const displayRank = isUser1Searched ? match.rank2 : match.rank1;
+                
+                return (
+                  <motion.div
+                    key={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 * index }}
+                    className="grid grid-cols-[80px_1fr_100px_120px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
+                  >
+                    <div className="font-medium">#{displayRank}</div>
+                    <div className="font-medium truncate">{displayUsername}</div>
+                    <div>
+                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
+                        ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                        ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                        ${match.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                        ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                      `}>
+                        {match.language}
+                      </span>
+                    </div>
+                    <div>
+                      <Badge className={`
+                        ${match.similarity > 0.9 ? 'bg-red-500/20 text-red-400' : ''}
+                        ${match.similarity > 0.7 && match.similarity <= 0.9 ? 'bg-yellow-500/20 text-yellow-400' : ''}
+                        ${match.similarity <= 0.7 ? 'bg-green-500/20 text-green-400' : ''}
+                      `}>
+                        {(match.similarity * 100).toFixed(1)}% Match
+                      </Badge>
+                    </div>
+                  </motion.div>
+                );
+              })}
               
               {similarityData.length === 0 && (
                 <div className="py-8 text-center text-gray-400">
