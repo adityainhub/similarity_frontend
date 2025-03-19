@@ -95,7 +95,16 @@ const ContestSelection = () => {
                             startDate: contest.startDate,
                             participantCount: contest.participantCount
                         }}
-                        onClick={() => navigate(`/contest/${contest.contestId}/questions`)}
+                        onClick={() => navigate(`/contest/${contest.contestId}/questions`, {
+                            state: {
+                                contestDetails: {
+                                    contestId: contest.contestId,
+                                    title: contest.title,
+                                    startDate: contest.startDate,
+                                    participantCount: contest.participantCount
+                                }
+                            }
+                        })}
                     />
                 ))}
               </motion.div>

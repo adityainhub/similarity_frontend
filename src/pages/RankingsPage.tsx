@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Search, ChevronLeft, ChevronRight, Filter, Users, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,16 +40,33 @@ const questionIdToNumberMap: Record<string, number> = {
   // Add more mappings as needed
 };
 
+interface LocationState {
+  contestDetails: {
+    contestId: string;
+    title: string;
+    startDate: string;
+    participantCount: number;
+  };
+  questionDetails: {
+    questionId: number;
+    questionNumber: number;
+    title: string;
+  };
+}
+
 const RankingsPage = () => {
-  const { contestId, questionId } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+  const { contestDetails, questionDetails } = location.state as LocationState;
+  const [rankings, setRankings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { contestId, questionId } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filterLanguage, setFilterLanguage] = useState<string>("");
   const [showOnlySolved, setShowOnlySolved] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [loading, setLoading] = useState(true);
   const [loadingSimilarity, setLoadingSimilarity] = useState(false);
 
   useEffect(() => {
@@ -172,7 +189,17 @@ const RankingsPage = () => {
   };
 
   return (
-      <div className="min-h-screen bg-[#121212] text-white mt-20">
+    <div className="min-h-screen bg-[#121212] text-white pt-6 md:mt-20 md:pt-0">
+      <div className="container mx-auto px-4 py-4 md:py-10">
+        {/* <div className="text-center mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#f59f00] mb-2">
+            {contestDetails?.title}
+          </h1>
+          <h2 className="text-xl text-gray-300">
+            Question {questionDetails?.questionNumber}: {questionDetails?.title}
+          </h2>
+        </div> */}
+        
         <div className="container mx-auto px-4 py-6">
           <motion.div
               initial={{ opacity: 0 }}
@@ -198,11 +225,11 @@ const RankingsPage = () => {
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-[#f59f00]">
-                  {contestId}
+                  {contestDetails?.title}
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
                   <Badge className="bg-[#1e1e1e] text-white border-none">
-                    Question {questionIdToNumberMap[questionId] || questionId}
+                    Question {questionDetails?.questionNumber}
                   </Badge>
                   <span className="text-gray-400">•</span>
                   <span className="text-gray-400">
@@ -454,6 +481,7 @@ const RankingsPage = () => {
           )}
         </div>
       </div>
+    </div>
   );
 };
 

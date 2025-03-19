@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock, Award, BarChart3, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,18 @@ interface Question {
   point: number;
 }
 
+interface ContestDetails {
+  contestId: string;
+  title: string;
+  startDate: string;
+  participantCount: number;
+}
+
 const QuestionSelection = () => {
   const { contestId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const contestDetails = location.state?.contestDetails as ContestDetails;
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -82,7 +91,7 @@ const QuestionSelection = () => {
             className="text-center mb-6 md:mb-10"
         >
           <h1 className="text-3xl md:text-4xl font-bold text-[#f59f00] mb-2">
-            {contestId}
+            {contestDetails?.title}
           </h1>
           <p className="text-gray-400 mb-4">Select a question to view rankings</p>
 
@@ -119,7 +128,21 @@ const QuestionSelection = () => {
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 className="bg-[#1e1e1e] border border-[#333] rounded-xl overflow-hidden cursor-pointer hover:border-[#f59f00]/50 transition-colors duration-300"
-                onClick={() => navigate(`/contest/${contestId}/question/${question.questionId}`)}
+                onClick={() => navigate(`/contest/${contestId}/question/${question.questionId}`, {
+                  state: {
+                    contestDetails: {
+                      contestId: contestId,
+                      title: contestDetails?.title,
+                      startDate: contestDetails?.startDate,
+                      participantCount: contestDetails?.participantCount
+                    },
+                    questionDetails: {
+                      questionId: question.questionId,
+                      questionNumber: question.questionNumber,
+                      title: question.title
+                    }
+                  }
+                })}
               >
                 {/* Desktop layout */}
                 <div className="hidden sm:flex items-center p-6">
