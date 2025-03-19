@@ -10,6 +10,8 @@ interface CodeButtonProps {
   isLeftPanel?: boolean;
   submissionId: string;
   onButtonClick?: () => void;
+  contestId?: string;
+  rank?: number;
 }
 
 interface CodeResponse {
@@ -17,7 +19,7 @@ interface CodeResponse {
   submittedCode: string;
 }
 
-const CodeButton = ({ username, score, language, isLeftPanel = false, submissionId, onButtonClick }: CodeButtonProps) => {
+const CodeButton = ({ username, score, language, isLeftPanel = false, submissionId, onButtonClick, contestId, rank }: CodeButtonProps) => {
   const [showCode, setShowCode] = useState(false);
   const [code, setCode] = useState<string>("");
   const [loading, setLoading] = useState(false);
@@ -63,6 +65,8 @@ const CodeButton = ({ username, score, language, isLeftPanel = false, submission
         isOpen={showCode}
         onClose={() => setShowCode(false)}
         isLeftPanel={isLeftPanel}
+        contestId={contestId}
+        rank={rank}
       />
     </>
   );

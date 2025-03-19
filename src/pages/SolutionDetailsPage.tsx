@@ -211,6 +211,8 @@ const SolutionDetailsPage = () => {
                 score={activeUser.score}
                 isLeftPanel={true}
                 submissionId={similarityData[0]?.submissionId1}
+                contestId={contestId}
+                rank={activeUser.rank}
             />
           </div>
 
@@ -316,6 +318,8 @@ const SolutionDetailsPage = () => {
                         language={match.language}
                         score={match.similarity * 100}
                         submissionId={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                        contestId={contestId}
+                        rank={displayRank}
                       />
                     </div>
                   </motion.div>

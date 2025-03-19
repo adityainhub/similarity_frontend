@@ -32,6 +32,14 @@ interface SimilarityMatch {
   submission2Time: string | null;
 }
 
+// Example mapping of question IDs to question numbers
+const questionIdToNumberMap: Record<string, number> = {
+  "q1": 1,
+  "q2": 2,
+  "q3": 3,
+  // Add more mappings as needed
+};
+
 const RankingsPage = () => {
   const { contestId, questionId } = useParams();
   const navigate = useNavigate();
@@ -48,7 +56,9 @@ const RankingsPage = () => {
     fetch(`http://localhost:8080/api/submissions/question/${questionId}`)
       .then((response) => response.json())
       .then((data) => {
-        setSubmissions(data);
+        // Sort submissions by rank in ascending order
+        const sortedSubmissions = data.sort((a: Submission, b: Submission) => a.rank - b.rank);
+        setSubmissions(sortedSubmissions);
         setLoading(false);
       })
       .catch((error) => {
@@ -191,7 +201,9 @@ const RankingsPage = () => {
                   {contestId}
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge className="bg-[#1e1e1e] text-white border-none">Question {questionId}</Badge>
+                  <Badge className="bg-[#1e1e1e] text-white border-none">
+                    Question {questionIdToNumberMap[questionId] || questionId}
+                  </Badge>
                   <span className="text-gray-400">•</span>
                   <span className="text-gray-400">
                   {filteredSubmissions.length} solved

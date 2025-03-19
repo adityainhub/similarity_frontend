@@ -1,6 +1,5 @@
-
 import React from "react";
-import { Check, Flag, Code } from "lucide-react";
+import { Check, Flag, Code, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -14,6 +13,8 @@ interface UserCodeViewerProps {
   isOpen: boolean;
   onClose: () => void;
   isLeftPanel?: boolean;
+  contestId?: string;
+  rank?: number;
 }
 
 const UserCodeViewer = ({
@@ -24,6 +25,8 @@ const UserCodeViewer = ({
   isOpen,
   onClose,
   isLeftPanel = false,
+  contestId = 'biweekly-contest-147',
+  rank = 1,
 }: UserCodeViewerProps) => {
   const getLanguageColor = (language: string) => {
     const colorMap: Record<string, { bg: string, text: string }> = {
@@ -47,6 +50,11 @@ const UserCodeViewer = ({
     toast.success("Report submitted", {
       description: `Thank you for reporting ${username}'s solution. We'll review it.`,
     });
+
+    // Open the LeetCode ranking page
+    const pageNumber = Math.ceil(rank / 25);
+    const leetcodeUrl = `https://leetcode.com/contest/${contestId}/ranking/${pageNumber}/?region=global_v2`;
+    window.open(leetcodeUrl, '_blank');
   };
 
   return (
@@ -68,7 +76,6 @@ const UserCodeViewer = ({
           </div>
         </div>
         
-        {/*{!isLeftPanel && (*/}
         <div className="mt-4 flex justify-between items-center">
           <div
               className="flex items-center cursor-pointer text-white hover:text-blue-400 text-sm"
@@ -77,12 +84,7 @@ const UserCodeViewer = ({
             <Flag size={14} className="mr-2" />
             Report Solution
           </div>
-
-          {/*<div className="text-gray-400 text-sm">*/}
-          {/*  Submitted on {new Date().toLocaleDateString()}*/}
-          {/*</div>*/}
         </div>
-        {/*)}*/}
       </DialogContent>
     </Dialog>
   );
