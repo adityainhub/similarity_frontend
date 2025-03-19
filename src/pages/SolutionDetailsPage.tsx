@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Check, Clock, FileCode, Trophy } from "lucide-react";
+import { ArrowLeft, Check, Clock, FileCode, Trophy, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import CodeButton from "@/components/CodeButton";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // Sample user data
 interface UserDetail {
@@ -17,7 +20,7 @@ interface UserDetail {
   language: string;
   solved: boolean;
   timeSeconds: number;
-  solutionSize: number;
+  matchCount: number;
   score: number;
   submissions: number;
   profileInitials: string;
@@ -44,6 +47,11 @@ interface SimilarityMatch {
   submission2Time: string | null;
 }
 
+interface CodeResponse {
+  submissionId: string;
+  submittedCode: string;
+}
+
 const SolutionDetailsPage = () => {
   const { contestId, questionId, userId } = useParams();
   const navigate = useNavigate();
@@ -52,6 +60,9 @@ const SolutionDetailsPage = () => {
   const [similarUsers, setSimilarUsers] = useState<SimilarUser[]>([]);
   const [isMobile, setIsMobile] = useState(false);
   const [similarityData, setSimilarityData] = useState<SimilarityMatch[]>([]);
+  const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
+  const [selectedCode, setSelectedCode] = useState<CodeResponse | null>(null);
+  const [loadingCode, setLoadingCode] = useState(false);
 
   // Handle responsive layout
   useEffect(() => {
@@ -68,47 +79,48 @@ const SolutionDetailsPage = () => {
   }, []);
 
   useEffect(() => {
-    // In a real app, fetch data from API based on userId
-    // For now, generate mock data
-    setTimeout(() => {
-      const mockUser: UserDetail = {
-        id: parseInt(userId || "1"),
-        rank: parseInt(userId || "1") % 100 + 1,
-        username: `user${userId}`,
-        language: ["Python", "JavaScript", "C++", "Java", "TypeScript"][parseInt(userId || "1") % 5],
-        solved: true,
-        timeSeconds: 1200 + (parseInt(userId || "1") % 1800),
-        solutionSize: 300 + (parseInt(userId || "1") % 500),
-        score: 70 + (parseInt(userId || "1") % 30),
-        submissions: 2 + (parseInt(userId || "1") % 3),
-        profileInitials: `U${userId?.charAt(0) || "1"}`
-      };
-
-      setActiveUser(mockUser);
-
-      // Generate similar users
-      const mockSimilarUsers: SimilarUser[] = Array(10).fill(null).map((_, i) => ({
-        id: 100 + i,
-        rank: 5 + i,
-        username: `similar_user${i + 1}`,
-        language: ["Python", "JavaScript", "C++", "Java", "TypeScript"][i % 5],
-        score: 65 + (i % 35)
-      }));
-
-      setSimilarUsers(mockSimilarUsers);
-    }, 300);
-  }, [userId]);
-
-  useEffect(() => {
     if (location.state?.similarityData) {
-      setSimilarityData(location.state.similarityData);
+      const similarityData = location.state.similarityData;
+      // Find the data for the searched user
+      const userMatch = similarityData[0]; // Get first match
+      const isUser1Searched = userMatch.username1 === userId;
+      
+      const activeUserData: UserDetail = {
+        id: parseInt(userId || "1"),
+        rank: isUser1Searched ? userMatch.rank1 : userMatch.rank2,
+        username: userId || "", // Remove "user" prefix, use actual userId
+        language: userMatch.language,
+        solved: true,
+        timeSeconds: 0, // You might want to use submission time if available
+        matchCount: similarityData.length, // Number of similar solutions
+        score: 0,
+        submissions: 1,
+        profileInitials: userId?.charAt(0).toUpperCase() || "U"
+      };
+      setActiveUser(activeUserData);
+      setSimilarityData(similarityData);
     }
-  }, [location.state]);
+  }, [location.state, userId]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleViewCode = async (submissionId: string) => {
+    setLoadingCode(true);
+    try {
+      const response = await fetch(`http://localhost:8080/api/codes/${submissionId}`);
+      const data = await response.json();
+      setSelectedCode(data);
+      setIsCodeModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching code:", error);
+      // You might want to add toast notification here
+    } finally {
+      setLoadingCode(false);
+    }
   };
 
   if (!activeUser) {
@@ -138,12 +150,12 @@ const SolutionDetailsPage = () => {
             <div>
               <h2 className="text-2xl font-bold">{activeUser.username}</h2>
               <div className="flex items-center mt-1">
-                <Badge className="mr-2 bg-[#1e1e1e] text-white">
+                {/* <Badge className="mr-2 bg-[#1e1e1e] text-white">
                   Rank #{activeUser.rank}
-                </Badge>
-                <Badge className={`bg-blue-500/20 text-blue-400`}>
+                </Badge> */}
+                {/* <Badge className={`bg-blue-500/20 text-blue-400`}>
                   {activeUser.language}
-                </Badge>
+                </Badge> */}
               </div>
             </div>
           </div>
@@ -155,13 +167,22 @@ const SolutionDetailsPage = () => {
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                  <div className="text-sm text-gray-400">Score</div>
-                  <div className="text-xl font-bold mt-1">{activeUser.score}%</div>
+                  <div className="text-sm text-gray-400">Rank</div>
+                  <div className="text-xl font-bold mt-1">#{activeUser.rank}</div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                  <div className="text-sm text-gray-400">Submissions</div>
-                  <div className="text-xl font-bold mt-1">{activeUser.submissions}</div>
+                  <div className="text-sm text-gray-400">Language</div>
+                  <div className="text-xl font-bold mt-1">
+                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
+                      ${activeUser.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                      ${activeUser.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                      ${activeUser.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                      ${activeUser.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                    `}>
+                      {activeUser.language}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
@@ -173,10 +194,10 @@ const SolutionDetailsPage = () => {
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
-                  <div className="text-sm text-gray-400">Size</div>
+                  <div className="text-sm text-gray-400">Similar Solutions</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
-                    <FileCode size={14} className="mr-1" />
-                    {activeUser.solutionSize}B
+                    <Users size={14} className="mr-1" />
+                    {activeUser.matchCount}
                   </div>
                 </div>
               </div>
@@ -189,6 +210,7 @@ const SolutionDetailsPage = () => {
                 language={activeUser.language}
                 score={activeUser.score}
                 isLeftPanel={true}
+                submissionId={similarityData[0]?.submissionId1}
             />
           </div>
 
@@ -212,7 +234,7 @@ const SolutionDetailsPage = () => {
                         Telegram Coder
                       </Badge>
                   )}
-                  {activeUser.solutionSize < 400 && (
+                  {activeUser.matchCount < 4 && (
                       <Badge className="bg-purple-500/20 text-purple-400 mr-2 mb-2">
                         GPT Coder
                       </Badge>
@@ -245,16 +267,16 @@ const SolutionDetailsPage = () => {
           </p>
 
           <div className="bg-[#1a1a1a] border border-[#333] rounded-lg overflow-hidden">
-            <div className="grid grid-cols-[80px_1fr_100px_120px] bg-[#222] border-b border-[#444] py-3 px-4">
+            <div className="grid grid-cols-[80px_1fr_100px_120px_80px] bg-[#222] border-b border-[#444] py-3 px-4">
               <div className="text-[#f59f00] font-semibold">Rank</div>
               <div className="text-[#f59f00] font-semibold">Username</div>
               <div className="text-[#f59f00] font-semibold">Language</div>
               <div className="text-[#f59f00] font-semibold">Similarity</div>
+              <div className="text-[#f59f00] font-semibold text-center">Code</div>
             </div>
 
             <div className="max-h-[60vh] overflow-y-auto">
               {similarityData.map((match, index) => {
-                // Determine which username to display (the one that's not the searched user)
                 const isUser1Searched = match.username1 === userId;
                 const displayUsername = isUser1Searched ? match.username2 : match.username1;
                 const displayRank = isUser1Searched ? match.rank2 : match.rank1;
@@ -265,9 +287,9 @@ const SolutionDetailsPage = () => {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 * index }}
-                    className="grid grid-cols-[80px_1fr_100px_120px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
+                    className="grid grid-cols-[80px_1fr_100px_120px_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
                   >
-                    <div className="font-medium">#{displayRank}</div>
+                    <div className="font-medium">{displayRank}</div>
                     <div className="font-medium truncate">{displayUsername}</div>
                     <div>
                       <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
@@ -287,6 +309,14 @@ const SolutionDetailsPage = () => {
                       `}>
                         {(match.similarity * 100).toFixed(1)}% Match
                       </Badge>
+                    </div>
+                    <div className="flex justify-center">
+                      <CodeButton
+                        username={displayUsername}
+                        language={match.language}
+                        score={match.similarity * 100}
+                        submissionId={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                      />
                     </div>
                   </motion.div>
                 );
@@ -331,7 +361,7 @@ const SolutionDetailsPage = () => {
               Solution Details
             </h1>
             <div className="flex items-center gap-2 mt-1">
-              <Badge className="bg-[#1e1e1e] text-white border-none">Contest {contestId}</Badge>
+              <Badge className="bg-[#1e1e1e] text-white border-none">{contestId}</Badge>
               <span className="text-gray-400">•</span>
               <Badge className="bg-[#1e1e1e] text-white border-none">Question {questionId}</Badge>
             </div>
@@ -363,6 +393,35 @@ const SolutionDetailsPage = () => {
                 </ResizablePanel>
               </ResizablePanelGroup>
           )}
+
+          <Dialog open={isCodeModalOpen} onOpenChange={setIsCodeModalOpen}>
+            <DialogContent className="max-w-4xl h-[80vh] bg-[#1a1a1a] border-[#333]">
+              <DialogHeader>
+                <DialogTitle className="text-[#f59f00]">
+                  Submitted Code
+                </DialogTitle>
+              </DialogHeader>
+              <div className="overflow-auto flex-1">
+                {loadingCode ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="animate-spin text-[#f59f00]">Loading code...</div>
+                  </div>
+                ) : (
+                  <SyntaxHighlighter
+                    language={activeUser?.language.toLowerCase().replace('3', '')}
+                    style={vscDarkPlus}
+                    customStyle={{
+                      backgroundColor: 'transparent',
+                      margin: 0,
+                      padding: '1rem',
+                    }}
+                  >
+                    {selectedCode?.submittedCode || ''}
+                  </SyntaxHighlighter>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
   );

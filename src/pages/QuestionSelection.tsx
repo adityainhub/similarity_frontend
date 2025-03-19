@@ -124,7 +124,7 @@ const QuestionSelection = () => {
                 {/* Desktop layout */}
                 <div className="hidden sm:flex items-center p-6">
                   <div className="w-12 h-12 flex items-center justify-center bg-[#f59f00]/10 text-[#f59f00] font-bold rounded-lg mr-4">
-                    {question.questionNumber}
+                    Q{question.questionNumber}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold">{question.title}</h3>

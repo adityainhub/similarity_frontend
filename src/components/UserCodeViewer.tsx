@@ -57,7 +57,7 @@ const UserCodeViewer = ({
             <DialogTitle className="text-[#f59f00]">{username}'s Solution</DialogTitle>
             <Badge className={`${bg} ${text}`}>{language}</Badge>
             {!isLeftPanel && (
-              <Badge className="bg-green-500/20 text-green-400">{score}% Efficiency</Badge>
+              <Badge className="bg-green-500/20 text-green-400">{score}% Match</Badge>
             )}
           </div>
         </DialogHeader>

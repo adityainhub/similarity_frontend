@@ -188,7 +188,7 @@ const RankingsPage = () => {
             <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-[#f59f00]">
-                  Weekly Contest {contestId}
+                  {contestId}
                 </h1>
                 <div className="flex items-center gap-2 mt-1">
                   <Badge className="bg-[#1e1e1e] text-white border-none">Question {questionId}</Badge>
@@ -341,7 +341,7 @@ const RankingsPage = () => {
                     className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center border-b border-[#333] last:border-0 hover:bg-[#222] transition-colors"
                   >
                     <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
-                      #{submission.rank}
+                      {submission.rank}
                     </div>
                     <div className="font-medium">{submission.username}</div>
                     <div>
