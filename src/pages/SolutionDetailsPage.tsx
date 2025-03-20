@@ -84,7 +84,7 @@ const SolutionDetailsPage = () => {
       // Find the data for the searched user
       const userMatch = similarityData[0]; // Get first match
       const isUser1Searched = userMatch.username1 === userId;
-      
+
       const activeUserData: UserDetail = {
         id: parseInt(userId || "1"),
         rank: isUser1Searched ? userMatch.rank1 : userMatch.rank2,
@@ -168,7 +168,7 @@ const SolutionDetailsPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Rank</div>
-                  <div className="text-xl font-bold mt-1">#{activeUser.rank}</div>
+                  <div className="text-xl font-bold mt-1 text-gray-400">#{activeUser.rank}</div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
@@ -176,9 +176,19 @@ const SolutionDetailsPage = () => {
                   <div className="text-xl font-bold mt-1">
                     <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
                       ${activeUser.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                      ${activeUser.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
                       ${activeUser.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                      ${activeUser.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                      ${activeUser.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                      ${activeUser.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                      ${activeUser.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                      ${activeUser.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
                       ${activeUser.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                      ${activeUser.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                      ${activeUser.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                      ${activeUser.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                      ${activeUser.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                      ${activeUser.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                      ${activeUser.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
                     `}>
                       {activeUser.language}
                     </span>
@@ -188,16 +198,16 @@ const SolutionDetailsPage = () => {
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Time</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
-                    <Clock size={14} className="mr-1" />
-                    {formatTime(activeUser.timeSeconds)}
+                    <Clock size={14} className="mr-1 text-gray-400" />
+                    <span className="text-gray-400">{formatTime(activeUser.timeSeconds)}</span>
                   </div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Similar Solutions</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
-                    <Users size={14} className="mr-1" />
-                    {activeUser.matchCount}
+                    <Users size={14} className="mr-1 text-gray-400" />
+                    <span className="text-gray-400">{activeUser.matchCount}</span>
                   </div>
                 </div>
               </div>
@@ -282,23 +292,33 @@ const SolutionDetailsPage = () => {
                 const isUser1Searched = match.username1 === userId;
                 const displayUsername = isUser1Searched ? match.username2 : match.username1;
                 const displayRank = isUser1Searched ? match.rank2 : match.rank1;
-                
+
                 return (
                   <motion.div
                     key={isUser1Searched ? match.submissionId2 : match.submissionId1}
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.1 * index }}
-                    className="grid grid-cols-[80px_1fr_100px_120px_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors"
+                    className={`grid grid-cols-[80px_1fr_100px_120px_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}
                   >
                     <div className="font-medium">{displayRank}</div>
                     <div className="font-medium truncate">{displayUsername}</div>
                     <div>
                       <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
                         ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                        ${match.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
                         ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                        ${match.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                        ${match.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                        ${match.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                        ${match.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                        ${match.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
                         ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                        ${match.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                        ${match.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                        ${match.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                        ${match.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                        ${match.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                        ${match.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
                       `}>
                         {match.language}
                       </span>
@@ -325,7 +345,7 @@ const SolutionDetailsPage = () => {
                   </motion.div>
                 );
               })}
-              
+
               {similarityData.length === 0 && (
                 <div className="py-8 text-center text-gray-400">
                   No similar solutions found
