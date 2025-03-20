@@ -168,7 +168,7 @@ const SolutionDetailsPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Rank</div>
-                  <div className="text-xl font-bold mt-1">#{activeUser.rank}</div>
+                  <div className="text-xl font-bold mt-1 text-gray-400">#{activeUser.rank}</div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
@@ -176,9 +176,19 @@ const SolutionDetailsPage = () => {
                   <div className="text-xl font-bold mt-1">
                     <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
                       ${activeUser.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                      ${activeUser.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
                       ${activeUser.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                      ${activeUser.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                      ${activeUser.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                      ${activeUser.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                      ${activeUser.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                      ${activeUser.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
                       ${activeUser.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                      ${activeUser.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                      ${activeUser.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                      ${activeUser.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                      ${activeUser.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                      ${activeUser.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                      ${activeUser.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
                     `}>
                       {activeUser.language}
                     </span>
@@ -188,16 +198,16 @@ const SolutionDetailsPage = () => {
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Time</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
-                    <Clock size={14} className="mr-1" />
-                    {formatTime(activeUser.timeSeconds)}
+                    <Clock size={14} className="mr-1 text-gray-400" />
+                    <span className="text-gray-400">{formatTime(activeUser.timeSeconds)}</span>
                   </div>
                 </div>
 
                 <div className="bg-[#1a1a1a] p-3 rounded-lg">
                   <div className="text-sm text-gray-400">Similar Solutions</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
-                    <Users size={14} className="mr-1" />
-                    {activeUser.matchCount}
+                    <Users size={14} className="mr-1 text-gray-400" />
+                    <span className="text-gray-400">{activeUser.matchCount}</span>
                   </div>
                 </div>
               </div>
