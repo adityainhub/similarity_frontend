@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -104,8 +103,9 @@ const HomeSection = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-5xl md:text-6xl font-bold mb-6"
           >
-            <span>Leetcode </span>
-            <span className="text-[#f59f00]">Plagiarism</span>
+            <span className="text-[#f59f00]">Similarity </span>
+            <span> Unmasked</span>
+
           </motion.h1>
 
           <motion.h2
@@ -114,7 +114,7 @@ const HomeSection = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="text-5xl md:text-6xl font-bold"
           >
-            Beyond <span className="inline-block mx-2">✦</span> Limits.
+            Beyond <span className="inline-block mx-2">✦</span> Imitation.
           </motion.h2>
 
           <motion.h3
@@ -123,7 +123,7 @@ const HomeSection = () => {
               transition={{ duration: 0.5, delay: 0.6 }}
               className="text-4xl md:text-5xl font-bold mt-6 text-[#f59f00]"
           >
-            Simplified By Us
+            Justice in Code
           </motion.h3>
 
           <motion.p
@@ -132,7 +132,7 @@ const HomeSection = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
               className="text-lg text-gray-400 mt-8 max-w-3xl mx-auto"
           >
-            Identify cheaters within minutes in leetcode contest
+            Exposing copied solutions after every contest
           </motion.p>
 
           <motion.div
@@ -166,39 +166,39 @@ const WhyUsSection = () => {
       </div>
       
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 animate-fadeInUp">
-        Experience The Benefits
+        Effortless Detection
       </h2>
       
       <h3 className="text-3xl md:text-4xl font-bold text-center mb-10 animate-fadeInUp">
-        Of Our Expertise
+      Uncompromised Integrity
       </h3>
       
       <p className="text-lg text-gray-400 text-center mb-20 animate-fadeInUp">
-        That drives impactful gain powerful results
+      We make identifying plagiarism fast, simple, and effective.
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
         <div className="animate-fadeInLeft">
           <FeatureCard 
             icon={<Brain className="h-8 w-8 text-white" />}
-            title="Innovative Approach"
-            description="Look for works that reflect a unique character and differentiate in a crowded marketplace."
+            title="User-Friendly Interface"
+            description="No complexity—just a clean, intuitive dashboard to get results instantly."
           />
         </div>
         
         <div className="animate-fadeInUp">
           <FeatureCard 
             icon={<Zap className="h-8 w-8 text-white" />}
-            title="Seamless Experience"
-            description="A seamless user experience across all devices, ensuring every interaction connects with the user."
+            title="Swift & Accurate Reports"
+            description="Expose unfair play with detailed reports, ready to take action."
           />
         </div>
         
         <div className="animate-fadeInRight">
           <FeatureCard 
             icon={<Users className="h-8 w-8 text-white" />}
-            title="Ongoing Partnership"
-            description="Find a new partner easily, not just providers, who offer ongoing support even after the project ends."
+            title="Fair Play, Every Time"
+            description="We help maintain a level playing field, ensuring rightful rankings without compromise."
           />
         </div>
       </div>
@@ -238,34 +238,30 @@ const MissionSection = () => {
       
       <div className="text-center max-w-5xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fadeInUp">
-          We Drive <span className="text-[#f59f00]">Businesses</span>
+        Exposing<span className="text-[#f59f00]"> Deception 🔍</span>
         </h2>
         
         <h3 className="text-3xl md:text-4xl font-bold mb-4 animate-fadeInUp">
-          To The <span className="text-[#f59f00]">Forefront</span> Of The Industries
+        Ensuring<span className="text-[#f59f00]"> Fair Play 🏆</span>
         </h3>
-        
-        <h4 className="text-3xl md:text-4xl font-bold mb-4 animate-fadeInUp">
-          Through Comprehensive
-        </h4>
-        
-        <h5 className="text-3xl md:text-4xl font-bold mb-12 animate-fadeInUp">
-          AI <span className="text-[#f59f00]">Automation.</span>
-        </h5>
-        
+
         <p className="text-lg text-gray-400 mb-4 animate-fadeInUp">
-          First impressions matter. That's why our mission is to create clean, enduring designs that elevate.
+        We unveil plagiarism with precision, safeguarding the integrity of coding contests.
         </p>
         
-        <p className="text-lg text-gray-400 mb-12 animate-fadeInUp">
-          First impressions matter. That's why our mission.
+        <p className="text-lg text-gray-400 mb-20 animate-fadeInUp">
+        By upholding fairness, we empower genuine talent to rise above imitation.
         </p>
         
         <div className="animate-fadeInUp">
           <Button 
             className="bg-transparent hover:bg-[#f59f00]/10 text-[#f59f00] border border-[#f59f00] rounded-md py-3 px-6 flex items-center gap-2 mx-auto"
+            onClick={() => {
+              const element = document.getElementById('contact');
+              element?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
-            Book A Call <ArrowRight size={16} />
+            Contact Us <ArrowRight size={16} />
           </Button>
         </div>
       </div>
@@ -304,7 +300,7 @@ const AboutUsSection = () => {
             <TeamMember
                 name="Kumar Aditya"
                 role="3rd Year UG"
-                secondaryRole="Aspiring Backend Developer"
+                secondaryRole="Aspiring Software Developer"
                 image="/lovable-uploads/websiteAboutUsKumar.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
                 instagramUrl="https://www.instagram.com/k.aditya07/"
@@ -372,42 +368,37 @@ const FAQSection = () => {
         <Accordion type="single" collapsible className="space-y-4">
           <AccordionItem value="item-1" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-              What Makes LcPlag Different From Other Solutions?
+            What is this platform, and what is its purpose?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
-              LcPlag stands out with its innovative approach to detecting plagiarism in coding contests. Unlike traditional solutions, 
-              we focus on blending cutting-edge technology with tailored strategies to optimize your contest management processes, 
-              ensuring maximum efficiency and fairness.
+            This platform helps identify how similar code submissions are during live contests. It provides an easy-to-use interface where users can search for participants and see how their codes compare with others. Additionally, it allows users to report suspicious similarities, promoting fair competition and discouraging unethical practices.
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="item-2" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-              How Does AI Enhance The Services Provided By LcPlag?
+            Are we reporting the users displayed here?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
-              Our AI-powered systems analyze code submissions using advanced pattern recognition and machine learning algorithms to 
-              identify similarities that may indicate plagiarism, even when code has been modified to avoid detection.
+            No, our platform's purpose is solely to show code similarity between participants. Whether to report a user or not is entirely up to the individuals using this platform. We do not take responsibility for any actions taken based on the displayed results.
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="item-3" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-              How Does LcPlag Ensure The Quality Of Its AI Solutions?
+            I believe I've been incorrectly listed on the website. What should I do?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
-              We employ rigorous testing and validation processes for all our AI models, continuously training them on diverse datasets 
-              to ensure accuracy and reliability in detecting plagiarism across different programming languages and coding styles.
+            We're sorry for any confusion! Please email us at similarity.help@gmail.com, and we'll look into the issue as soon as possible.
             </AccordionContent>
           </AccordionItem>
           
           <AccordionItem value="item-4" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-              Does LcPlag Offer Customized Solutions?
+            What's next for this platform?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
-              Yes, we offer tailored solutions to meet the specific needs of different contest platforms and organizations, 
-              with customizable parameters and integration options to fit seamlessly into your existing systems.
+            We're working on expanding support to more coding contest platforms, improving detection accuracy, and adding new features to enhance transparency and fairness in competitive programming. Stay tuned for updates!
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -440,7 +431,7 @@ const ContactSection = () => {
           
           <div className="mt-8 text-center mb-8">
             <p className="text-gray-400">
-              Whether you're a recruiter looking to hire, or a developer looking to collaborate, I'm always happy to chat.
+            Got questions or feedback? Whether you're here to explore, report issues, or just say hi, feel free to drop a message!
             </p>
           </div>
           
@@ -459,7 +450,7 @@ const ContactSection = () => {
               <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-2">Your Message</label>
               <Textarea 
                 id="message" 
-                placeholder="Hi, Your website looks so good, so I am sending you the job offer!" 
+                placeholder="Share your thoughts, feedback, or questions here!" 
                 className="bg-[#222] border-[#333] text-white min-h-[120px]" 
               />
             </div>
