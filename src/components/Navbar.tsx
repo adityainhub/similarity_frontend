@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
       <nav className="fixed top-6 left-0 right-0 z-50 flex justify-center">
-        <div className="bg-black/90 rounded-full py-4 px-8 max-w-4xl w-full mx-auto flex justify-between items-center shadow-lg backdrop-blur-sm">
+        <div className="bg-black/60 rounded-full py-2.5 px-8 max-w-4xl w-full mx-auto flex justify-between items-center shadow-lg backdrop-blur-sm">
           <a href="/" className="text-[#f59f00] text-2xl font-bold">Similarity</a>
 
           <div className="hidden md:flex items-center space-x-10">
