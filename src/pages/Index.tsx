@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -408,6 +408,55 @@ const FAQSection = () => {
 };
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch('http://192.168.0.223:8080/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      setSubmitStatus({
+        type: 'success', 
+        message: 'Message sent successfully!'
+      });
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 pt-20">
       <div className="flex justify-center mb-12">
@@ -435,15 +484,38 @@ const ContactSection = () => {
             </p>
           </div>
           
-          <form className="space-y-6">
+          {submitStatus.type && (
+            <div className={`mb-6 p-4 rounded ${
+              submitStatus.type === 'success' ? 'bg-green-500/20 text-green-200' : 'bg-red-500/20 text-red-200'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
+          
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">Full Name</label>
-              <Input id="name" placeholder="Your Full Name" className="bg-[#222] border-[#333] text-white" />
+              <Input 
+                id="name" 
+                placeholder="Your Full Name" 
+                className="bg-[#222] border-[#333] text-white"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">Email</label>
-              <Input id="email" type="email" placeholder="Your Email" className="bg-[#222] border-[#333] text-white" />
+              <Input 
+                id="email" 
+                type="email" 
+                placeholder="Your Email" 
+                className="bg-[#222] border-[#333] text-white"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
             
             <div>
@@ -451,15 +523,19 @@ const ContactSection = () => {
               <Textarea 
                 id="message" 
                 placeholder="Share your thoughts, feedback, or questions here!" 
-                className="bg-[#222] border-[#333] text-white min-h-[120px]" 
+                className="bg-[#222] border-[#333] text-white min-h-[120px]"
+                value={formData.message}
+                onChange={handleChange}
+                required
               />
             </div>
             
             <Button 
               type="submit" 
               className="w-full bg-[#f59f00] hover:bg-[#e67700] text-black font-medium py-5 rounded-md text-base flex items-center justify-center gap-2"
+              disabled={isSubmitting}
             >
-              Send Message <ArrowRight size={16} />
+              {isSubmitting ? 'Sending...' : 'Send Message'} <ArrowRight size={16} />
             </Button>
           </form>
         </div>

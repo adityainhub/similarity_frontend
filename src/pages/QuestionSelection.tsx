@@ -32,7 +32,7 @@ const QuestionSelection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/questions/contest/${contestId}`)
+    fetch(`http://192.168.0.223:8080/api/questions/contest/${contestId}`)
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);

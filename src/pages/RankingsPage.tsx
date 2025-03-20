@@ -56,21 +56,54 @@ interface LocationState {
 
 const RankingsPage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { contestDetails, questionDetails } = location.state as LocationState;
+  const { contestId, questionId } = useParams();
+  const [contestDetails, setContestDetails] = useState(null);
+  const [questionDetails, setQuestionDetails] = useState(null);
+  const [loadingSimilarity, setLoadingSimilarity] = useState(false);
+
+  // Fetch contest and question details if not available in state
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        // Only fetch if details are not in state
+        if (!location.state?.contestDetails) {
+          const contestResponse = await fetch(`http://192.168.0.223:8080/api/contests/${contestId}`);
+          if (!contestResponse.ok) throw new Error('Failed to fetch contest details');
+          const contestData = await contestResponse.json();
+          setContestDetails(contestData);
+        } else {
+          setContestDetails(location.state.contestDetails);
+        }
+
+        if (!location.state?.questionDetails) {
+          const questionResponse = await fetch(`http://192.168.0.223:8080/api/questions/${questionId}`);
+          if (!questionResponse.ok) throw new Error('Failed to fetch question details');
+          const questionData = await questionResponse.json();
+          setQuestionDetails(questionData);
+        } else {
+          setQuestionDetails(location.state.questionDetails);
+        }
+      } catch (error) {
+        console.error('Error fetching details:', error);
+        toast.error('Failed to load page details');
+      }
+    };
+
+    fetchDetails();
+  }, [contestId, questionId, location.state]);
+
   const [rankings, setRankings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { contestId, questionId } = useParams();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [filterLanguage, setFilterLanguage] = useState<string>("");
   const [showOnlySolved, setShowOnlySolved] = useState(false);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
-  const [loadingSimilarity, setLoadingSimilarity] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/submissions/question/${questionId}`)
+    fetch(`http://192.168.0.223:8080/api/submissions/question/${questionId}`)
       .then((response) => response.json())
       .then((data) => {
         // Sort submissions by rank in ascending order
@@ -173,12 +206,20 @@ const RankingsPage = () => {
   const handleCheckSimilarity = async (username: string) => {
     setLoadingSimilarity(true);
     try {
-      const response = await fetch(`http://localhost:8080/api/submissions/matches?username=${username}&questionId=${questionId}`);
+      const response = await fetch(`http://192.168.0.223:8080/api/submissions/matches?username=${username}&questionId=${questionId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch similarity data');
+      }
       const data: SimilarityMatch[] = await response.json();
       
-      // Navigate to solution details with the similarity data
+      // Update navigation path to match URL structure
       navigate(`/contest/${contestId}/question/${questionId}/solution/${username}`, {
-        state: { similarityData: data }
+        state: { 
+          similarityData: data,
+          fromRankings: true,
+          contestDetails,
+          questionDetails
+        }
       });
     } catch (error) {
       console.error("Error fetching similarity:", error);
@@ -187,6 +228,15 @@ const RankingsPage = () => {
       setLoadingSimilarity(false);
     }
   };
+
+  // Show loading state while fetching details
+  if (!contestDetails || !questionDetails) {
+    return (
+      <div className="min-h-screen bg-[#121212] text-white flex items-center justify-center">
+        <div className="animate-spin text-[#f59f00] text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#121212] text-white pt-6 md:mt-20 md:pt-0">
@@ -205,13 +255,14 @@ const RankingsPage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
+              className="ml-[-1.5rem]"
           >
             <Button
                 variant="ghost"
-                className="text-gray-400 hover:text-[#F59F00] active:text-[#F59F00] transition-colors duration-200 mb-6 hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="text-gray-400 hover:text-[#F59F00] active:text-[#F59F00] transition-colors duration-200 mb-6 mt-3.5 md:mt-0 hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => navigate(`/contest/${contestId}/questions`)}
             >
-              <ArrowLeft size={16} className="mr-2" />
+              <ArrowLeft size={16} className="mr-0.6" />
               Back to Questions
             </Button>
           </motion.div>
@@ -272,14 +323,14 @@ const RankingsPage = () => {
                 />
               </div>
 
-              <Button
+              {/* <Button
                   variant="outline"
                   className="bg-[#1e1e1e] border-[#333] text-white hover:bg-[#2a2a2a] w-full lg:w-auto"
                   onClick={() => setIsFilterOpen(!isFilterOpen)}
               >
                 <Filter size={16} className="mr-2" />
                 Filters
-              </Button>
+              </Button> */}
             </div>
 
             <AnimatePresence>
@@ -377,56 +428,108 @@ const RankingsPage = () => {
                   <motion.div
                     key={`${submission.username}-${submission.rank}`}
                     variants={item}
-                    className={`hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}
                   >
-                    <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
-                      {submission.rank}
-                    </div>
-                    <div className="font-medium">{submission.username}</div>
-                    <div>
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
-                        ${submission.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
-                        ${submission.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
-                        ${submission.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                        ${submission.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
-                        ${submission.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
-                        ${submission.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
-                        ${submission.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
-                        ${submission.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
-                        ${submission.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
-                        ${submission.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
-                        ${submission.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
-                        ${submission.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
-                        ${submission.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
-                        ${submission.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
-                      `}>
-                        {submission.language}
-                      </span>
-                    </div>
-                    <div className="flex items-center text-sm">
-                      {submission.submissionTime ? (
-                        <div className="flex items-center">
-                          <span className="text-gray-400 mr-1">⏱</span>
-                          <span>{new Date(submission.submissionTime).toLocaleTimeString()}</span>
-                        </div>
-                      ) : (
-                        <span className="text-gray-400">No time recorded</span>
-                      )}
-                    </div>
-                    <div className="flex justify-center">
-                      <button
-                        className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors"
-                        onClick={() => handleCheckSimilarity(submission.username)}
-                        disabled={loadingSimilarity}
-                      >
-                        {loadingSimilarity ? (
-                          <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                    {/* Desktop view */}
+                    <div className={`hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                      <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
+                        {submission.rank}
+                      </div>
+                      <div className="font-medium">{submission.username}</div>
+                      <div>
+                        <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
+                          ${submission.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                          ${submission.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
+                          ${submission.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                          ${submission.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                          ${submission.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                          ${submission.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                          ${submission.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
+                          ${submission.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                          ${submission.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                          ${submission.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                          ${submission.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                          ${submission.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                          ${submission.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                          ${submission.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
+                        `}>
+                          {submission.language}
+                        </span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        {submission.submissionTime ? (
+                          <div className="flex items-center">
+                            <span className="text-gray-400 mr-1">⏱</span>
+                            <span>{new Date(submission.submissionTime).toLocaleTimeString()}</span>
+                          </div>
                         ) : (
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
+                          <span className="text-gray-400">No time recorded</span>
                         )}
-                      </button>
+                      </div>
+                      <div className="flex justify-center">
+                        <button
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors"
+                          onClick={() => handleCheckSimilarity(submission.username)}
+                          disabled={loadingSimilarity}
+                        >
+                          {loadingSimilarity ? (
+                            <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Mobile view */}
+                    <div className={`md:hidden grid grid-cols-[60px_1fr_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                      <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
+                        {submission.rank}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{submission.username}</span>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`px-2 py-0.5 rounded-full text-xs font-medium
+                            ${submission.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                            ${submission.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
+                            ${submission.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                            ${submission.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                            ${submission.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                            ${submission.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                            ${submission.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
+                            ${submission.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                            ${submission.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                            ${submission.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                            ${submission.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                            ${submission.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                            ${submission.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                            ${submission.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
+                          `}>
+                            {submission.language}
+                          </span>
+                          {submission.submissionTime && (
+                            <span className="text-xs text-gray-400">
+                              ⏱ {new Date(submission.submissionTime).toLocaleTimeString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <button
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-green-500 hover:bg-green-600 transition-colors"
+                          onClick={() => handleCheckSimilarity(submission.username)}
+                          disabled={loadingSimilarity}
+                        >
+                          {loadingSimilarity ? (
+                            <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 ))}

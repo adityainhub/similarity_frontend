@@ -79,28 +79,42 @@ const SolutionDetailsPage = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Location state:", location.state); // Debug log
+    
     if (location.state?.similarityData) {
       const similarityData = location.state.similarityData;
+      console.log("Similarity data:", similarityData); // Debug log
+      
       // Find the data for the searched user
-      const userMatch = similarityData[0]; // Get first match
+      const userMatch = similarityData[0];
+      if (!userMatch) {
+        console.error("No matches found in similarity data");
+        return;
+      }
+      
       const isUser1Searched = userMatch.username1 === userId;
-
+      console.log("User match:", userMatch, "isUser1Searched:", isUser1Searched); // Debug log
+  
       const activeUserData: UserDetail = {
         id: parseInt(userId || "1"),
         rank: isUser1Searched ? userMatch.rank1 : userMatch.rank2,
-        username: userId || "", // Remove "user" prefix, use actual userId
+        username: userId || "",
         language: userMatch.language,
         solved: true,
-        timeSeconds: 0, // You might want to use submission time if available
-        matchCount: similarityData.length, // Number of similar solutions
+        timeSeconds: 0,
+        matchCount: similarityData.length,
         score: 0,
         submissions: 1,
         profileInitials: userId?.charAt(0).toUpperCase() || "U"
       };
       setActiveUser(activeUserData);
       setSimilarityData(similarityData);
+    } else {
+      console.error("No similarity data in location state"); // Debug log
+      // Redirect back to rankings if no data
+      navigate(`/contest/${contestId}/question/${questionId}/rankings`);
     }
-  }, [location.state, userId]);
+  }, [location.state, userId, contestId, questionId, navigate]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -111,7 +125,7 @@ const SolutionDetailsPage = () => {
   const handleViewCode = async (submissionId: string) => {
     setLoadingCode(true);
     try {
-      const response = await fetch(`http://localhost:8080/api/codes/${submissionId}`);
+      const response = await fetch(`http://192.168.0.223:8080/api/codes/${submissionId}`);
       const data = await response.json();
       setSelectedCode(data);
       setIsCodeModalOpen(true);
@@ -226,7 +240,7 @@ const SolutionDetailsPage = () => {
             />
           </div>
 
-          <div className="mt-auto pt-6">
+          {/* <div className="mt-auto pt-6">
             <Card className="bg-[#222] border-[#333]">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center text-lg text-[#f59f00]">
@@ -259,103 +273,161 @@ const SolutionDetailsPage = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
         </motion.div>
       </div>
   );
 
   // Render the similar solutions panel
   const renderSimilarSolutionsPanel = () => (
-      <div className="h-full p-6">
-        <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="flex flex-col h-full"
-        >
-          <h2 className="text-xl font-bold mb-4 text-[#f59f00]">Similar Solutions</h2>
-          <p className="text-gray-400 mb-6">
-            Users who submitted similar solutions to this problem
-          </p>
+  <div className="h-full p-6">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.2 }}
+      className="flex flex-col h-full"
+    >
+      <h2 className="text-xl font-bold mb-4 text-[#f59f00]">Similar Solutions</h2>
+      <p className="text-gray-400 mb-6">
+        Users who submitted similar solutions to this problem
+      </p>
 
-          <div className="bg-[#1a1a1a] border border-[#333] rounded-lg overflow-hidden">
-            <div className="grid grid-cols-[80px_1fr_100px_120px_80px] bg-[#222] border-b border-[#444] py-3 px-4">
-              <div className="text-[#f59f00] font-semibold">Rank</div>
-              <div className="text-[#f59f00] font-semibold">Username</div>
-              <div className="text-[#f59f00] font-semibold">Language</div>
-              <div className="text-[#f59f00] font-semibold">Similarity</div>
-              <div className="text-[#f59f00] font-semibold text-center">Code</div>
-            </div>
+      <div className="bg-[#1a1a1a] border border-[#333] rounded-lg overflow-hidden">
+        {/* Table Header - Different for mobile and desktop */}
+        <div className="sticky top-0 z-10">
+          <div className="hidden md:grid grid-cols-[80px_1fr_100px_120px_80px] bg-[#222] border-b border-[#444] py-3 px-4">
+            <div className="text-[#f59f00] font-semibold">Rank</div>
+            <div className="text-[#f59f00] font-semibold">Username</div>
+            <div className="text-[#f59f00] font-semibold">Language</div>
+            <div className="text-[#f59f00] font-semibold">Similarity</div>
+            <div className="text-[#f59f00] font-semibold text-center">Code</div>
+          </div>
+          
+          <div className="md:hidden grid grid-cols-[60px_1fr_80px] bg-[#222] border-b border-[#444] py-3 px-4">
+            <div className="text-[#f59f00] font-semibold">Rank</div>
+            <div className="text-[#f59f00] font-semibold">Details</div>
+            <div className="text-[#f59f00] font-semibold text-center">Code</div>
+          </div>
+        </div>
 
-            <div className="max-h-[60vh] overflow-y-auto">
-              {similarityData.map((match, index) => {
-                const isUser1Searched = match.username1 === userId;
-                const displayUsername = isUser1Searched ? match.username2 : match.username1;
-                const displayRank = isUser1Searched ? match.rank2 : match.rank1;
+        <div className="max-h-[60vh] overflow-y-auto">
+          {similarityData.map((match, index) => {
+            const isUser1Searched = match.username1 === userId;
+            const displayUsername = isUser1Searched ? match.username2 : match.username1;
+            const displayRank = isUser1Searched ? match.rank2 : match.rank1;
 
-                return (
-                  <motion.div
-                    key={isUser1Searched ? match.submissionId2 : match.submissionId1}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.1 * index }}
-                    className={`grid grid-cols-[80px_1fr_100px_120px_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}
-                  >
-                    <div className="font-medium">{displayRank}</div>
-                    <div className="font-medium truncate">{displayUsername}</div>
-                    <div>
+            return (
+              <motion.div
+                key={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.1 * index }}
+              >
+                {/* Desktop View */}
+                <div className={`hidden md:grid grid-cols-[80px_1fr_100px_120px_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                  <div className="font-medium">{displayRank}</div>
+                  <div className="font-medium truncate">{displayUsername}</div>
+                  <div>
+                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
+                     ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                     ${match.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
+                     ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                     ${match.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                     ${match.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                     ${match.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                     ${match.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
+                     ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                     ${match.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                     ${match.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                     ${match.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                     ${match.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                     ${match.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                     ${match.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
+                     
+                    `}>
+                      {match.language}
+                    </span>
+                  </div>
+                  <div>
+                    <Badge className={`
+                      ${match.similarity > 0.9 ? 'bg-red-500/20 text-red-400' : ''}
+                      ${match.similarity > 0.7 && match.similarity <= 0.9 ? 'bg-yellow-500/20 text-yellow-400' : ''}
+                      ${match.similarity <= 0.7 ? 'bg-green-500/20 text-green-400' : ''}
+                    `}>
+                      {(match.similarity * 100).toFixed(1)}%
+                    </Badge>
+                  </div>
+                  <div className="flex justify-center">
+                    <CodeButton
+                      username={displayUsername}
+                      language={match.language}
+                      score={match.similarity * 100}
+                      submissionId={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                      contestId={contestId}
+                      rank={displayRank}
+                    />
+                  </div>
+                </div>
+
+                {/* Mobile View */}
+                <div className={`md:hidden grid grid-cols-[60px_1fr_80px] items-center py-3 px-4 border-b border-[#333] hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                  <div className="font-medium">{displayRank}</div>
+                  <div className="flex flex-col">
+                    <span className="font-medium truncate">{displayUsername}</span>
+                    <div className="flex items-center gap-2 mt-1">
                       <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
-                        ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
-                        ${match.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
-                        ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
-                        ${match.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
-                        ${match.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
-                        ${match.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
-                        ${match.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
-                        ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
-                        ${match.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
-                        ${match.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
-                        ${match.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
-                        ${match.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
-                        ${match.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
-                        ${match.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
+                       ${match.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                       ${match.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
+                       ${match.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
+                       ${match.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
+                       ${match.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
+                       ${match.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
+                       ${match.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
+                       ${match.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
+                       ${match.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                       ${match.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                       ${match.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
+                       ${match.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                       ${match.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                       ${match.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
+                       
                       `}>
                         {match.language}
                       </span>
-                    </div>
-                    <div>
                       <Badge className={`
                         ${match.similarity > 0.9 ? 'bg-red-500/20 text-red-400' : ''}
                         ${match.similarity > 0.7 && match.similarity <= 0.9 ? 'bg-yellow-500/20 text-yellow-400' : ''}
                         ${match.similarity <= 0.7 ? 'bg-green-500/20 text-green-400' : ''}
                       `}>
-                        {(match.similarity * 100).toFixed(1)}% Match
+                        {(match.similarity * 100).toFixed(1)}%
                       </Badge>
                     </div>
-                    <div className="flex justify-center">
-                      <CodeButton
-                        username={displayUsername}
-                        language={match.language}
-                        score={match.similarity * 100}
-                        submissionId={isUser1Searched ? match.submissionId2 : match.submissionId1}
-                        contestId={contestId}
-                        rank={displayRank}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              })}
-
-              {similarityData.length === 0 && (
-                <div className="py-8 text-center text-gray-400">
-                  No similar solutions found
+                  </div>
+                  <div className="flex justify-end">
+                    <CodeButton
+                      username={displayUsername}
+                      language={match.language}
+                      score={match.similarity * 100}
+                      submissionId={isUser1Searched ? match.submissionId2 : match.submissionId1}
+                      contestId={contestId}
+                      rank={displayRank}
+                    />
+                  </div>
                 </div>
-              )}
+              </motion.div>
+            );
+          })}
+
+          {similarityData.length === 0 && (
+            <div className="py-8 text-center text-gray-400">
+              No similar solutions found
             </div>
-          </div>
-        </motion.div>
+          )}
+        </div>
       </div>
-  );
+    </motion.div>
+  </div>
+);
 
   return (
       <div className="min-h-screen bg-[#121212] text-white mt-20">
@@ -370,8 +442,8 @@ const SolutionDetailsPage = () => {
                 className="text-gray-400 hover:text-[#F59F00] active:text-[#F59F00] transition-colors duration-200 mb-6 hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => navigate(`/contest/${contestId}/question/${questionId}`)}
             >
-              <ArrowLeft size={16} className="mr-2" />
-              Back to Rankings
+                <ArrowLeft size={16} className="mr-2" />
+                Back to Rankings
             </Button>
           </motion.div>
 
