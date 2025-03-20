@@ -373,11 +373,11 @@ const RankingsPage = () => {
               </div>
             ) : (
               <motion.div variants={container} initial="hidden" animate="show">
-                {paginatedSubmissions.map((submission) => (
+                {paginatedSubmissions.map((submission, index) => (
                   <motion.div
                     key={`${submission.username}-${submission.rank}`}
                     variants={item}
-                    className="hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center border-b border-[#333] last:border-0 hover:bg-[#222] transition-colors"
+                    className={`hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}
                   >
                     <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
                       {submission.rank}
@@ -386,14 +386,19 @@ const RankingsPage = () => {
                     <div>
                       <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium
                         ${submission.language === 'python3' ? 'bg-blue-900 text-blue-200' : ''}
+                        ${submission.language === 'python' ? 'bg-blue-900 text-blue-200' : ''}
                         ${submission.language === 'javascript' ? 'bg-yellow-900 text-yellow-200' : ''}
                         ${submission.language === 'typescript' ? 'bg-blue-800 text-blue-200' : ''}
                         ${submission.language === 'ruby' ? 'bg-red-900 text-red-200' : ''}
                         ${submission.language === 'go' ? 'bg-teal-900 text-teal-200' : ''}
                         ${submission.language === 'rust' ? 'bg-orange-900 text-orange-200' : ''}
                         ${submission.language === 'java' ? 'bg-amber-900 text-amber-200' : ''}
-                        ${submission.language === 'cpp' ? 'bg-purple-900 text-purple-200' : ''}
+                        ${submission.language === 'cpp' ? 'bg-purple-900 text-green-200' : ''}
+                        ${submission.language === 'c' ? 'bg-indigo-900 text-indigo-200' : ''}
+                        ${submission.language === 'csharp' ? 'bg-green-900 text-purple-200' : ''}
                         ${submission.language === 'kotlin' ? 'bg-violet-900 text-violet-200' : ''}
+                        ${submission.language === 'swift' ? 'bg-pink-900 text-pink-200' : ''}
+                        ${submission.language === 'scala' ? 'bg-red-800 text-red-100' : ''}
                       `}>
                         {submission.language}
                       </span>
