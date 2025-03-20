@@ -36,10 +36,10 @@ const Navbar = () => {
           <div className="relative">
             <div className="absolute -inset-px bg-gradient-to-r rounded-lg opacity-30 blur-sm"></div>
             <button
-                className="relative bg-[#222222] text-white px-5 py-2 rounded-lg flex items-center gap-2 hover:bg-[#333333] transition-colors"
+                className="relative bg-[#2a2417] text-[#ff9d00] px-4 py-2 rounded-md hover:bg-[#352c1d] transition-colors"
                 onClick={() => navigate('/contests')}
             >
-              Contests <ArrowRight size={16} />
+              Contests
             </button>
           </div>
         </div>
