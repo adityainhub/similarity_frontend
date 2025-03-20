@@ -212,7 +212,7 @@ const RankingsPage = () => {
       }
       const data: SimilarityMatch[] = await response.json();
       
-      // Update navigation path to match URL structure
+      // Pass the question number from questionDetails state
       navigate(`/contest/${contestId}/question/${questionId}/solution/${username}`, {
         state: { 
           similarityData: data,
@@ -227,6 +227,12 @@ const RankingsPage = () => {
     } finally {
       setLoadingSimilarity(false);
     }
+  };
+
+  const getQuestionNumber = (questionId: string) => {
+    // Assuming questionId is in the format "q<number>"
+    const parts = questionId.match(/\d+/);
+    return parts ? parts[0] : questionId;
   };
 
   // Show loading state while fetching details

@@ -137,6 +137,11 @@ const SolutionDetailsPage = () => {
     }
   };
 
+  // Get question number from location state
+  const getQuestionNumber = () => {
+    return location.state?.questionDetails?.questionNumber || questionId;
+  };
+
   if (!activeUser) {
     return (
         <div className="min-h-screen bg-[#121212] text-white flex items-center justify-center">
@@ -459,7 +464,7 @@ const SolutionDetailsPage = () => {
             <div className="flex items-center gap-2 mt-1">
               <Badge className="bg-[#1e1e1e] text-white border-none">{contestId}</Badge>
               <span className="text-gray-400">•</span>
-              <Badge className="bg-[#1e1e1e] text-white border-none">Question {questionId}</Badge>
+              <Badge className="bg-[#1e1e1e] text-white border-none">Question {getQuestionNumber()}</Badge>
             </div>
           </motion.div>
 
