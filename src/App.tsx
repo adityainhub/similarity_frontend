@@ -47,32 +47,34 @@ const ScrollToHash = () => {
   return null;
 };
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Navbar />
-        <ScrollToHash />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/contests" element={<ContestSelection />} />
-          <Route path="/contest/:contestId/questions" element={<QuestionSelection />} />
-          <Route path="/contest/:contestId/question/:questionId" element={<RankingsPage />} />
-          <Route path="/contest/:contestId/question/:questionId/solution/:userId" element={<SolutionDetailsPage />} />
-          <Route path="/why-us" element={<WhyUsPage />} />
-          <Route path="/mission" element={<MissionPage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
-          <Route path="/faq" element={<FAQPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Navbar />
+          <ScrollToHash />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/contests" element={<ContestSelection />} />
+            <Route path="/contest/:contestId/questions" element={<QuestionSelection />} />
+            <Route path="/contest/:contestId/question/:questionId" element={<RankingsPage />} />
+            <Route path="/contest/:contestId/question/:questionId/solution/:userId" element={<SolutionDetailsPage />} />
+            <Route path="/why-us" element={<WhyUsPage />} />
+            <Route path="/mission" element={<MissionPage />} />
+            <Route path="/about-us" element={<AboutUsPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
 

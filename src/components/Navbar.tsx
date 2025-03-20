@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import favIcon from "/fav-Icon.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -23,7 +23,10 @@ const Navbar = () => {
   return (
       <nav className="fixed top-6 left-0 right-0 z-50 flex justify-center">
         <div className="bg-black/60 rounded-full py-2.5 px-8 max-w-4xl w-full mx-auto flex justify-between items-center shadow-lg backdrop-blur-sm">
-          <a href="/" className="text-[#f59f00] text-2xl font-bold">Similarity</a>
+          <a href="/" className="text-[#f59f00] text-2xl font-bold flex items-center gap-2">
+            <img src={favIcon} alt="Similarity Icon" className="w-9 h-9" />
+            Similarity
+          </a>
 
           <div className="hidden md:flex items-center space-x-10">
             <button onClick={() => handleNavigation('why-us')} className="text-white hover:text-gray-300 transition-colors">Why Us</button>
