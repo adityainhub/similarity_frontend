@@ -56,9 +56,9 @@ const UserCodeViewer = ({
   const { bg, text } = getLanguageColor(language);
 
   const handleReportUser = () => {
-    toast.success("Report submitted", {
-      description: `Thank you for reporting ${username}'s solution. We'll review it.`,
-    });
+    // toast.success("Report submitted", {
+    //   description: `Thank you for reporting ${username}'s solution. We'll review it.`,
+    // });
 
     // Open the LeetCode ranking page
     const pageNumber = Math.ceil(rank / 25);
