@@ -68,7 +68,7 @@ const UserCodeViewer = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[80vh] bg-[#1a1a1a] border-[#333] text-white w-[calc(100vw-2rem)] sm:w-auto overflow-hidden">
+      <DialogContent className="max-w-3xl max-h-[80vh] bg-[#121212] border-[#333] text-white w-[calc(100vw-2rem)] sm:w-auto overflow-hidden">
         <DialogHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full overflow-hidden">
             <DialogTitle className="text-[#f59f00] truncate max-w-full">{username}'s Solution</DialogTitle>
@@ -82,7 +82,7 @@ const UserCodeViewer = ({
         </DialogHeader>
 
         <div className="mt-4">
-          <div className="bg-[#121212] p-2 sm:p-4 rounded-md font-mono text-xs sm:text-sm overflow-x-auto max-h-[50vh] overflow-y-auto">
+          <div className="bg-[#1a1a1a] p-2 sm:p-4 rounded-md font-mono text-xs sm:text-sm overflow-x-auto max-h-[50vh] overflow-y-auto">
             <pre className={`whitespace-pre-wrap ${text}`}>{code}</pre>
           </div>
         </div>
