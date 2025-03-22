@@ -423,7 +423,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contact', {
+      const response = await fetch('http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

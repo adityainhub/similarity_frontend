@@ -125,7 +125,7 @@ const SolutionDetailsPage = () => {
   const handleViewCode = async (submissionId: string) => {
     setLoadingCode(true);
     try {
-      const response = await fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/codes/${submissionId}`);
+      const response = await fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/codes/${submissionId}`);
       const data = await response.json();
       setSelectedCode(data);
       setIsCodeModalOpen(true);

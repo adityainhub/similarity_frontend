@@ -67,7 +67,7 @@ const RankingsPage = () => {
       try {
         // Only fetch if details are not in state
         if (!location.state?.contestDetails) {
-          const contestResponse = await fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contests/${contestId}`);
+          const contestResponse = await fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contests/${contestId}`);
           if (!contestResponse.ok) throw new Error('Failed to fetch contest details');
           const contestData = await contestResponse.json();
           setContestDetails(contestData);
@@ -76,7 +76,7 @@ const RankingsPage = () => {
         }
 
         if (!location.state?.questionDetails) {
-          const questionResponse = await fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/questions/${questionId}`);
+          const questionResponse = await fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/questions/${questionId}`);
           if (!questionResponse.ok) throw new Error('Failed to fetch question details');
           const questionData = await questionResponse.json();
           setQuestionDetails(questionData);
@@ -103,7 +103,7 @@ const RankingsPage = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
-    fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/submissions/question/${questionId}`)
+    fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/submissions/question/${questionId}`)
       .then((response) => response.json())
       .then((data) => {
         // Sort submissions by rank in ascending order
@@ -206,7 +206,7 @@ const RankingsPage = () => {
   const handleCheckSimilarity = async (username: string) => {
     setLoadingSimilarity(true);
     try {
-      const response = await fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/submissions/matches?username=${username}&questionId=${questionId}`);
+      const response = await fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/submissions/matches?username=${username}&questionId=${questionId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch similarity data');
       }
