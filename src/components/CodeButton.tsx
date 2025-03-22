@@ -32,7 +32,7 @@ const CodeButton = ({ username, score, language, isLeftPanel = false, submission
     
     setLoading(true);
     try {
-      const response = await fetch(`http://192.168.0.223:8080/api/codes/${submissionId}`);
+      const response = await fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/codes/${submissionId}`);
       const data: CodeResponse = await response.json();
       setCode(data.submittedCode);
       setShowCode(true);

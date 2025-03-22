@@ -19,7 +19,7 @@ const ContestSelection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://192.168.0.223:8080/api/contests")
+    fetch("https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contests")
         .then((response) => response.json())
         .then((data) => {
           setContests(data);

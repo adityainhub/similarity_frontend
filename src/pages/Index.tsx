@@ -299,7 +299,7 @@ const AboutUsSection = () => {
           <div className="animate-fadeInRight">
             <TeamMember
                 name="Kumar Aditya"
-                role="3rd Year UG"
+                role="Pre-Finl Year @BMSCE"
                 secondaryRole="Aspiring Software Developer"
                 image="/lovable-uploads/websiteAboutUsKumar.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
@@ -423,7 +423,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('http://192.168.0.223:8080/api/contact', {
+      const response = await fetch('https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

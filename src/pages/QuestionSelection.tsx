@@ -32,7 +32,7 @@ const QuestionSelection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://192.168.0.223:8080/api/questions/contest/${contestId}`)
+    fetch(`https://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/questions/contest/${contestId}`)
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);
