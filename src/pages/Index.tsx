@@ -157,6 +157,36 @@ const HomeSection = () => {
 };
 
 const WhyUsSection = () => {
+  const navigate = useNavigate();
+  const [defaultContestId, setDefaultContestId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch the latest contest when component mounts
+    const fetchLatestContest = async () => {
+      try {
+        const response = await fetch('https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/contests');
+        if (!response.ok) throw new Error('Failed to fetch contests');
+        const contests = await response.json();
+        if (contests && contests.length > 0) {
+          setDefaultContestId(contests[0].id); // Assuming the first contest is the latest
+        }
+      } catch (error) {
+        console.error('Error fetching latest contest:', error);
+      }
+    };
+
+    fetchLatestContest();
+  }, []);
+
+  const handleContestClick = () => {
+    if (defaultContestId) {
+      navigate(`/contest/${defaultContestId}`);
+    } else {
+      console.error('No contest available');
+      // Optionally show a toast message to user
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-6 pt-20">
       <div className="flex justify-center mb-12">
@@ -206,7 +236,7 @@ const WhyUsSection = () => {
       <div className="flex justify-center mt-20 animate-fadeInUp">
         <Button 
           className="bg-[#f59f00] hover:bg-[#e67700] text-black font-medium py-5 px-6 rounded-md text-base flex items-center gap-2"
-          onClick={() => window.location.href = '/contests'}
+          onClick={handleContestClick}
         >
           Contests <ArrowRight size={16} />
         </Button>
@@ -299,7 +329,7 @@ const AboutUsSection = () => {
           <div className="animate-fadeInRight">
             <TeamMember
                 name="Kumar Aditya"
-                role="Pre-Finl Year @BMSCE"
+                role="Pre-Final Year @BMSCE"
                 secondaryRole="Aspiring Software Developer"
                 image="/lovable-uploads/websiteAboutUsKumar.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
@@ -368,8 +398,8 @@ const FAQSection = () => {
         <Accordion type="single" collapsible className="space-y-4">
           <AccordionItem value="item-1" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-            What is this platform, and what is its purpose?
             </AccordionTrigger>
+            What is this platform, and what is its purpose?
             <AccordionContent className="px-6 pb-4 text-gray-400">
             This platform helps identify how similar code submissions are during live contests. It provides an easy-to-use interface where users can search for participants and see how their codes compare with others. Additionally, it allows users to report suspicious similarities, promoting fair competition and discouraging unethical practices.
             </AccordionContent>
@@ -377,7 +407,7 @@ const FAQSection = () => {
           
           <AccordionItem value="item-2" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-            Are we reporting the users displayed here?
+              Are we reporting the users displayed here?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
             No, our platform's purpose is solely to show code similarity between participants. Whether to report a user or not is entirely up to the individuals using this platform. We do not take responsibility for any actions taken based on the displayed results.
@@ -423,7 +453,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/contact', {
+      const response = await fetch('https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
