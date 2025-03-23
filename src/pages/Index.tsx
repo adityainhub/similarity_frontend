@@ -204,12 +204,12 @@ const WhyUsSection = () => {
       </div>
       
       <div className="flex justify-center mt-20 animate-fadeInUp">
-        <Button 
+        {/* <Button 
           className="bg-[#f59f00] hover:bg-[#e67700] text-black font-medium py-5 px-6 rounded-md text-base flex items-center gap-2"
           onClick={() => window.location.href = '/contests'}
         >
           Contests <ArrowRight size={16} />
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
