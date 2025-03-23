@@ -32,7 +32,7 @@ const QuestionSelection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://similarity-env.eba-phkzknkd.eu-north-1.elasticbeanstalk.com/api/questions/contest/${contestId}`)
+    fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/questions/contest/${contestId}`)
       .then((response) => response.json())
       .then((data) => {
         setQuestions(data);
