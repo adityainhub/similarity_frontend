@@ -398,8 +398,8 @@ const FAQSection = () => {
         <Accordion type="single" collapsible className="space-y-4">
           <AccordionItem value="item-1" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-            </AccordionTrigger>
             What is this platform, and what is its purpose?
+            </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
             This platform helps identify how similar code submissions are during live contests. It provides an easy-to-use interface where users can search for participants and see how their codes compare with others. Additionally, it allows users to report suspicious similarities, promoting fair competition and discouraging unethical practices.
             </AccordionContent>
@@ -407,7 +407,7 @@ const FAQSection = () => {
           
           <AccordionItem value="item-2" className="border border-[#333] rounded-lg overflow-hidden bg-[#1a1a1a]">
             <AccordionTrigger className="px-6 py-4 text-lg font-medium hover:no-underline">
-              Are we reporting the users displayed here?
+            Are we reporting the users displayed here?
             </AccordionTrigger>
             <AccordionContent className="px-6 pb-4 text-gray-400">
             No, our platform's purpose is solely to show code similarity between participants. Whether to report a user or not is entirely up to the individuals using this platform. We do not take responsibility for any actions taken based on the displayed results.
