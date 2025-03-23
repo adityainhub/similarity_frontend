@@ -125,7 +125,7 @@ const SolutionDetailsPage = () => {
   const handleViewCode = async (submissionId: string) => {
     setLoadingCode(true);
     try {
-      const response = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/codes/${submissionId}`);
+      const response = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/codes/${submissionId}`);
       const data = await response.json();
       setSelectedCode(data);
       setIsCodeModalOpen(true);
