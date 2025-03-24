@@ -1,5 +1,6 @@
 {
-  "base": "./",
-  "plugins": ["react"]
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
   
