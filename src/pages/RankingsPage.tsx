@@ -436,7 +436,10 @@ const RankingsPage = () => {
                     variants={item}
                   >
                     {/* Desktop view */}
-                    <div className={`hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                    <div 
+                      className={`hidden md:grid md:grid-cols-[80px_1fr_120px_120px_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0 cursor-pointer`}
+                      onClick={() => handleCheckSimilarity(submission.username)}
+                    >
                       <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
                         {submission.rank}
                       </div>
@@ -489,7 +492,10 @@ const RankingsPage = () => {
                     </div>
 
                     {/* Mobile view */}
-                    <div className={`md:hidden grid grid-cols-[60px_1fr_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0`}>
+                    <div 
+                      className={`md:hidden grid grid-cols-[60px_1fr_80px] py-3 px-4 items-center hover:bg-[#222] transition-colors ${index % 2 === 0 ? 'bg-[#1a1a1a]' : 'bg-[#222222]'} last:border-b-0 cursor-pointer`}
+                      onClick={() => handleCheckSimilarity(submission.username)}
+                    >
                       <div className={`font-medium ${submission.rank <= 3 ? 'text-[#f59f00]' : ''}`}>
                         {submission.rank}
                       </div>
