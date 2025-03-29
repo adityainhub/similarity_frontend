@@ -22,7 +22,11 @@ const ContestSelection = () => {
     fetch("https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/contests")
         .then((response) => response.json())
         .then((data) => {
-          setContests(data);
+          // Sort contests by startDate (most recent first)
+          const sortedContests = data.sort((a, b) => 
+            new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+          );
+          setContests(sortedContests);
           setLoading(false);
         })
         .catch((error) => {
