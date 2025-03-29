@@ -106,7 +106,7 @@
 }
 
 .hero-bg {
-  background-image: url('/lovable-uploads/0f91416c-2456-46e4-87b1-7ecb5e56e922.png');
+  background-image: url('/uploads/0f91416c-2456-46e4-87b1-7ecb5e56e922.png');
   background-size: cover;
   background-position: center;
   background-color: rgba(0, 0, 0, 0.7);
@@ -115,7 +115,7 @@
 
 .dot-pattern-overlay {
   background-color: rgba(0, 0, 0, 0.6);
-  background-image: url('/lovable-uploads/b93b548b-6465-4fe7-a059-8134b2785c26.png');
+  background-image: url('/uploads/b93b548b-6465-4fe7-a059-8134b2785c26.png');
   background-blend-mode: overlay;
   background-size: cover;
 }

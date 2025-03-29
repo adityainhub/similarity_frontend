@@ -23,14 +23,14 @@ const AboutUsPage = () => {
             name="Vyom Goyal"
             role="Samsung R&D Intern"
             secondaryRole="ACM ICPC 2024 Regionalist"
-            image="/lovable-uploads/ffd81992-04bb-43ec-adfc-e3157efc5e08.png"
+            image="/uploads/ffd81992-04bb-43ec-adfc-e3157efc5e08.png"
           />
           
           <TeamMember 
             name="Kumar Aditya"
             role="3rd Year UG"
             secondaryRole="Aspiring Backend Developer"
-            image="/lovable-uploads/ee8a7903-4877-4726-bd05-db654dc47c5f.png"
+            image="/uploads/ee8a7903-4877-4726-bd05-db654dc47c5f.png"
           />
         </div>
       </div>

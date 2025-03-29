@@ -52,7 +52,7 @@ const Index = () => {
         {/* Background image container with opacity */}
         <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0 opacity-70"
-            style={{ backgroundImage: "url('/lovable-uploads/heroBackgroudImg.png')" }}
+            style={{ backgroundImage: "url('/uploads/heroBackgroudImg.png')" }}
         ></div>
 
         {/* Your existing dot pattern overlay */}
@@ -318,7 +318,7 @@ const AboutUsSection = () => {
                 name="Vyom Goyal"
                 role="Samsung R&D Intern"
                 secondaryRole="ACM ICPC 2024 Regionalist"
-                image="/lovable-uploads/websiteAboutUsVyom.jpeg"
+                image="/uploads/websiteAboutUsVyom.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/vyom-goyal-09ab5b246/"
                 instagramUrl="https://www.instagram.com/vyom__goyal/"
                 githubUrl="https://github.com/Vyom-26"
@@ -331,7 +331,7 @@ const AboutUsSection = () => {
                 name="Kumar Aditya"
                 role="Pre-Final Year @BMSCE"
                 secondaryRole="Aspiring Software Developer"
-                image="/lovable-uploads/websiteAboutUsKumar.jpeg"
+                image="/uploads/websiteAboutUsKumar.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
                 instagramUrl="https://www.instagram.com/k.aditya07/"
                 githubUrl="https://github.com/adityainhub"
