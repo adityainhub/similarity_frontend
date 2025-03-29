@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
@@ -9,56 +8,73 @@ import ContestHeader from "@/components/ContestHeader";
 import QuestionSelector from "@/components/QuestionSelector";
 import UserRankTable from "@/components/UserRankTable";
 
+// Add date to the interface
+interface User {
+  id: number;
+  rank: number;
+  username: string;
+  language: string;
+  solved: boolean;
+  submissionDate: string; // Add this field
+}
+
 const ContestDetails = () => {
   const { contestId } = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedQuestion, setSelectedQuestion] = useState(2);
-  
-  // Mock data for the table - in a real app this would come from an API
+
+  // Update mock data to include dates
   const mockUsers = Array(100).fill(null).map((_, i) => ({
     id: i + 1,
     rank: i + 1,
     username: `user${i + 1}`,
     language: ["Python", "JavaScript", "C++", "Java", "Go"][Math.floor(Math.random() * 5)],
-    solved: Math.random() > 0.3
+    solved: Math.random() > 0.3,
+    submissionDate: new Date(Date.now() - Math.floor(Math.random() * 7 * 24 * 60 * 60 * 1000)).toISOString() // Random date within last 7 days
   }));
-  
+
+  // Sort users by submission date (most recent first)
+  const sortedUsers = [...mockUsers].sort((a, b) =>
+    new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime()
+  );
+
   const usersPerPage = 25;
   const totalPages = Math.ceil(mockUsers.length / usersPerPage);
-  
-  const filteredUsers = mockUsers.filter(user =>
+
+  // Update filtered users to use sorted array
+  const filteredUsers = sortedUsers.filter(user =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.language.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
+
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * usersPerPage,
     currentPage * usersPerPage
   );
-  
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setCurrentPage(1); // Reset to first page on search
   };
-  
+
   const handleQuestionChange = (questionNumber: number) => {
     setSelectedQuestion(questionNumber);
   };
-  
+
   return (
     <div className="min-h-screen bg-[#121212] text-white">
       <div className="container mx-auto px-4 py-8">
         <ContestHeader contestName={`LeetCode Weekly Contest ${contestId || '438'}`} />
-        
+
         <div className="mt-6">
           <QuestionSelector 
             selectedQuestion={selectedQuestion} 
             onQuestionChange={handleQuestionChange} 
           />
         </div>
-        
+
         <div className="mt-6 relative">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -70,11 +86,11 @@ const ContestDetails = () => {
             />
           </div>
         </div>
-        
+
         <div className="mt-6">
           <UserRankTable users={paginatedUsers} />
         </div>
-        
+
         <div className="mt-8 flex justify-center">
           <Pagination
             currentPage={currentPage}
