@@ -95,7 +95,7 @@ const HomeSection = () => {
           >
           <span className="flex items-center text-sm">
             <span className="bg-green-500 h-2 w-2 rounded-full mr-2 animate-blink"></span>
-            <span className="text-gray-300">Version 1.2 launching soon</span>
+            <span className="text-gray-300">Version 1.3 launching soon</span>
           </span>
           </motion.div>
 
