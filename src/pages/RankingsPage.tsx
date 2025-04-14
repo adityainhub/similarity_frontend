@@ -292,11 +292,7 @@ const RankingsPage = () => {
                   </Badge>
                   <span className="text-gray-400">•</span>
                   <span className="text-gray-400">
-                  {filteredSubmissions.length} solved
-                </span>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-gray-400">
-                  {Math.round((filteredSubmissions.length / submissions.length) * 100)}% acceptance
+                  {filteredSubmissions.length} Flagged
                 </span>
                 </div>
               </div>
@@ -304,11 +300,11 @@ const RankingsPage = () => {
               <div className="flex gap-3">
                 <div className="bg-[#1e1e1e] border border-[#333] rounded-lg px-4 py-2 flex items-center">
                   <Trophy size={18} className="text-[#f59f00] mr-2" />
-                  <span className="font-medium">Top Performers</span>
+                  <span className="font-medium">Top Filtered</span>
                 </div>
                 <div className="bg-[#1e1e1e] border border-[#333] rounded-lg px-4 py-2 flex items-center">
                   <Users size={18} className="text-[#f59f00] mr-2" />
-                  <span className="font-medium">{submissions.length.toLocaleString()} Participants</span>
+                  <span className="font-medium">{submissions.length.toLocaleString()} Suspicious Solutions</span>
                 </div>
               </div>
             </div>
