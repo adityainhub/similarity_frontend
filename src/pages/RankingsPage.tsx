@@ -10,6 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import UserRankRow from "@/components/UserRankRow";
 import { toast } from "sonner";
 
+const BASE_URL = import.meta.env.VITE_API_BASE;
+
 // Add interface for the submission data
 interface Submission {
   username: string;
@@ -67,7 +69,7 @@ const RankingsPage = () => {
       try {
         // Only fetch if details are not in state
         if (!location.state?.contestDetails) {
-          const contestResponse = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/contests/${contestId}`);
+          const contestResponse = await fetch(`${BASE_URL}/api/contests/${contestId}`);
           if (!contestResponse.ok) throw new Error('Failed to fetch contest details');
           const contestData = await contestResponse.json();
           setContestDetails(contestData);
@@ -76,7 +78,7 @@ const RankingsPage = () => {
         }
 
         if (!location.state?.questionDetails) {
-          const questionResponse = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/questions/${questionId}`);
+          const questionResponse = await fetch(`${BASE_URL}/api/questions/${questionId}`);
           if (!questionResponse.ok) throw new Error('Failed to fetch question details');
           const questionData = await questionResponse.json();
           setQuestionDetails(questionData);
@@ -103,7 +105,7 @@ const RankingsPage = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
 
   useEffect(() => {
-    fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/submissions/question/${questionId}`)
+    fetch(`${BASE_URL}/api/submissions/question/${questionId}`)
       .then((response) => response.json())
       .then((data) => {
         // Sort submissions by rank in ascending order
@@ -206,7 +208,7 @@ const RankingsPage = () => {
   const handleCheckSimilarity = async (username: string) => {
     setLoadingSimilarity(true);
     try {
-      const response = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/submissions/matches?username=${username}&questionId=${questionId}`);
+      const response = await fetch(`${BASE_URL}/api/submissions/matches?username=${username}&questionId=${questionId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch similarity data');
       }

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,10 @@ import AboutUsPage from "./pages/AboutUsPage";
 import FAQPage from "./pages/FAQPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
+import SearchTypeSelection from "./pages/SearchTypeSelection";
+import UsernameSearch from "./pages/UsernameSearch";
+import QuestionSelectionUserName from "./pages/QuestionSelectionUserName";
+import SolutionDetailsPageUserName from "./pages/SolutionDetailsPageUserName";
 
 const queryClient = new QueryClient();
 
@@ -58,7 +61,12 @@ const App = () => {
           <ScrollToHash />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/search" element={<SearchTypeSelection />} />
             <Route path="/contests" element={<ContestSelection />} />
+            <Route path="/username-search" element={<UsernameSearch />} />
+            <Route path="/username-search/:username" element={<UsernameSearch />} />
+            <Route path="/username-search/:username/:contestId" element={<QuestionSelectionUserName />} />
+            <Route path="/username-search/:username/:contestId/:questionId/solution" element={<SolutionDetailsPageUserName />} />
             <Route path="/contest/:contestId/questions" element={<QuestionSelection />} />
             <Route path="/contest/:contestId/question/:questionId" element={<RankingsPage />} />
             <Route path="/contest/:contestId/question/:questionId/solution/:userId" element={<SolutionDetailsPage />} />

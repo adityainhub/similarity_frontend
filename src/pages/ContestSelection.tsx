@@ -5,6 +5,8 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import ContestCard from "@/components/ContestCard";
 
+const BASE_URL = import.meta.env.VITE_API_BASE;
+
 interface Contest {
   contestId: string;
   title: string;
@@ -19,7 +21,7 @@ const ContestSelection = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/contests")
+    fetch(`${BASE_URL}/api/contests`)
         .then((response) => response.json())
         .then((data) => {
           // Sort contests by startDate (most recent first)
