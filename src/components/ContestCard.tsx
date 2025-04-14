@@ -13,9 +13,10 @@ interface Contest {
 interface ContestCardProps {
   contest: Contest;
   onClick: () => void;
+  isLatest?: boolean;
 }
 
-const ContestCard = ({ contest, onClick }: ContestCardProps) => {
+const ContestCard = ({ contest, onClick, isLatest = false }: ContestCardProps) => {
   const item = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 }
@@ -26,9 +27,14 @@ const ContestCard = ({ contest, onClick }: ContestCardProps) => {
       variants={item}
       whileHover={{ scale: 1.03, y: -5 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
-      className="bg-gradient-to-br from-[#1a1a1a] to-[#252525] border border-[#333] rounded-lg overflow-hidden cursor-pointer hover:border-[#f59f00]/50 transition-colors duration-300 shadow-lg"
+      className="bg-gradient-to-br from-[#1a1a1a] to-[#252525] border border-[#333] rounded-lg overflow-hidden cursor-pointer hover:border-[#f59f00]/50 transition-colors duration-300 shadow-lg relative"
       onClick={onClick}
     >
+      {isLatest && (
+        <div className="absolute top-3 right-3">
+          <Badge className="bg-[#f59f00] text-black font-semibold">New</Badge>
+        </div>
+      )}
       <div className="p-6">
         <div className="bg-[#f59f00]/10 rounded-lg px-3 py-1 inline-block mb-3">
           <span className="text-[#f59f00] font-semibold">{contest.id}</span>

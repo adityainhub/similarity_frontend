@@ -92,7 +92,7 @@ const ContestSelection = () => {
                   animate="show"
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
-                {filteredContests.map((contest) => (
+                {filteredContests.map((contest, index) => (
                     <ContestCard
                         key={contest.contestId}
                         contest={{
@@ -101,6 +101,7 @@ const ContestSelection = () => {
                             startDate: contest.startDate,
                             participantCount: contest.participantCount
                         }}
+                        isLatest={index === 0}
                         onClick={() => navigate(`/contest/${contest.contestId}/questions`, {
                             state: {
                                 contestDetails: {
