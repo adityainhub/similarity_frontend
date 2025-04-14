@@ -134,7 +134,7 @@ const HomeSection = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
               className="text-lg text-gray-400 mt-8 max-w-3xl mx-auto"
           >
-            Exposing copied solutions after every contest
+            Exposing similar solutions after every contest
           </motion.p>
 
           <motion.div

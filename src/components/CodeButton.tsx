@@ -18,7 +18,7 @@ interface CodeResponse {
   submissionId: string;
   submittedCode: string;
 }
-
+const BASE_URL = import.meta.env.VITE_API_BASE;
 const CodeButton = ({ username, score, language, isLeftPanel = false, submissionId, onButtonClick, contestId, rank }: CodeButtonProps) => {
   const [showCode, setShowCode] = useState(false);
   const [code, setCode] = useState<string>("");
@@ -32,7 +32,7 @@ const CodeButton = ({ username, score, language, isLeftPanel = false, submission
     
     setLoading(true);
     try {
-      const response = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net//api/codes/${submissionId}`);
+      const response = await fetch(`${BASE_URL}/api/codes/${submissionId}`);
       const data: CodeResponse = await response.json();
       setCode(data.submittedCode);
       setShowCode(true);
