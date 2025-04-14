@@ -93,7 +93,7 @@ const QuestionSelectionUserName = () => {
           <h1 className="text-3xl md:text-4xl font-bold text-[#f59f00] mb-2">
             {contestDetails?.contestTitle}
           </h1>
-          <p className="text-gray-400 mb-4">Questions attempted by {username}</p>
+          <p className="text-gray-400 mb-4">Flagged questions for {username}</p>
 
           {/* Stats section */}
           <div className="hidden md:inline-flex gap-6 bg-[#1e1e1e] border border-[#333] rounded-full px-8 py-3 mb-8">

@@ -75,7 +75,7 @@ const UserCodeViewer = ({
             <div className="flex flex-wrap gap-2">
               <Badge className={`${bg} ${text} text-xs sm:text-sm`}>{language}</Badge>
               {!isLeftPanel && (
-                <Badge className="bg-green-500/20 text-green-400 text-xs sm:text-sm">{score}% Match</Badge>
+                <Badge className="bg-green-500/20 text-green-400 text-xs sm:text-sm">{score.toFixed(1)}% Match</Badge>
               )}
             </div>
           </div>
