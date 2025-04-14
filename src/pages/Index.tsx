@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
+const BASE_URL = import.meta.env.VITE_API_BASE;
+
 const Index = () => {
   const navigate = useNavigate();
   
@@ -164,7 +166,7 @@ const WhyUsSection = () => {
     // Fetch the latest contest when component mounts
     const fetchLatestContest = async () => {
       try {
-        const response = await fetch('https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/contests');
+        const response = await fetch(`${BASE_URL}/api/contests`);
         if (!response.ok) throw new Error('Failed to fetch contests');
         const contests = await response.json();
         if (contests && contests.length > 0) {
@@ -453,7 +455,7 @@ const ContactSection = () => {
     setIsSubmitting(true);
     
     try {
-      const response = await fetch('https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/contact', {
+      const response = await fetch(`${BASE_URL}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

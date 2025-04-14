@@ -40,7 +40,7 @@ const Navbar = () => {
             <div className="absolute -inset-px bg-gradient-to-r rounded-lg opacity-30 blur-sm"></div>
             <button
                 className="relative bg-[#2a2417] text-[#ff9d00] px-4 py-2 rounded-md hover:bg-[#352c1d] transition-colors"
-                onClick={() => navigate('/contests')}
+                onClick={() => navigate('/search')}
             >
               Contests
             </button>
