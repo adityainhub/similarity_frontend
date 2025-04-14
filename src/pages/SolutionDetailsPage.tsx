@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+const BASE_URL = import.meta.env.VITE_API_BASE;
+
 // Sample user data
 interface UserDetail {
   id: number;
@@ -125,7 +127,7 @@ const SolutionDetailsPage = () => {
   const handleViewCode = async (submissionId: string) => {
     setLoadingCode(true);
     try {
-      const response = await fetch(`https://similarity-czdzezbugrb9g2gy.southindia-01.azurewebsites.net/api/codes/${submissionId}`);
+      const response = await fetch(`${BASE_URL}/api/codes/${submissionId}`);
       const data = await response.json();
       setSelectedCode(data);
       setIsCodeModalOpen(true);
