@@ -241,7 +241,7 @@ const SolutionDetailsPage = () => {
                 language={activeUser.language}
                 score={activeUser.score}
                 isLeftPanel={true}
-                submissionId={similarityData[0]?.submissionId1}
+                submissionId={similarityData[0]?.username1 === userId ? similarityData[0]?.submissionId1 : similarityData[0]?.submissionId2}
                 contestId={contestId}
                 rank={activeUser.rank}
             />
