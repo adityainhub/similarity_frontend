@@ -31,7 +31,7 @@ const ContestCard = ({ contest, onClick, isLatest = false }: ContestCardProps) =
       onClick={onClick}
     >
       {isLatest && (
-        <div className="absolute top-3 right-3">
+        <div className="absolute top-3 right-3"> 
           <Badge className="bg-[#f59f00] text-black font-semibold">Updated</Badge>
         </div>
       )}
