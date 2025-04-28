@@ -220,7 +220,16 @@ const SolutionDetailsPage = () => {
                   <div className="text-sm text-gray-400">Time</div>
                   <div className="text-xl font-bold mt-1 flex items-center">
                     <Clock size={14} className="mr-1 text-gray-400" />
-                    <span className="text-gray-400">{formatTime(activeUser.timeSeconds)}</span>
+                    <span className="text-gray-400">
+                      {similarityData[0]?.username1 === userId 
+                        ? similarityData[0]?.submission1Time 
+                          ? new Date(similarityData[0].submission1Time).toLocaleTimeString()
+                          : "No time recorded"
+                        : similarityData[0]?.submission2Time 
+                          ? new Date(similarityData[0].submission2Time).toLocaleTimeString()
+                          : "No time recorded"
+                      }
+                    </span>
                   </div>
                 </div>
 
@@ -363,6 +372,16 @@ const SolutionDetailsPage = () => {
                     `}>
                       {(match.similarity * 100).toFixed(1)}%
                     </Badge>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {isUser1Searched 
+                        ? match.submission2Time 
+                          ? new Date(match.submission2Time).toLocaleTimeString()
+                          : "No time recorded"
+                        : match.submission1Time 
+                          ? new Date(match.submission1Time).toLocaleTimeString()
+                          : "No time recorded"
+                      }
+                    </div>
                   </div>
                   <div className="flex justify-center">
                     <CodeButton
@@ -408,6 +427,16 @@ const SolutionDetailsPage = () => {
                       `}>
                         {(match.similarity * 100).toFixed(1)}%
                       </Badge>
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {isUser1Searched 
+                        ? match.submission2Time 
+                          ? new Date(match.submission2Time).toLocaleTimeString()
+                          : "No time recorded"
+                        : match.submission1Time 
+                          ? new Date(match.submission1Time).toLocaleTimeString()
+                          : "No time recorded"
+                      }
                     </div>
                   </div>
                   <div className="flex justify-end">
