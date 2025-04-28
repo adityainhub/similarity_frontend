@@ -59,6 +59,7 @@ interface MainUser {
   submissionId: string;
   questionId: number;
   language: string;
+  submissionTime: string | null;
 }
 
 interface MatchedUser {
@@ -68,6 +69,7 @@ interface MatchedUser {
   questionId: number;
   language: string;
   similarity: number;
+  submissionTime: string | null;
 }
 
 interface SolutionData {
@@ -133,8 +135,8 @@ const SolutionDetailsPageUserName = () => {
             language: user.language,
             rank1: data.mainUser.rank,
             rank2: user.rank,
-            submission1Time: null,
-            submission2Time: null
+            submission1Time: data.mainUser.submissionTime,
+            submission2Time: user.submissionTime
           }));
           setSimilarityData(similarityMatches);
         })
@@ -235,7 +237,12 @@ const SolutionDetailsPageUserName = () => {
                 <div className="text-sm text-gray-400">Time</div>
                 <div className="text-xl font-bold mt-1 flex items-center">
                   <Clock size={14} className="mr-1 text-gray-400" />
-                  <span className="text-gray-400">{formatTime(activeUser.timeSeconds)}</span>
+                  <span className="text-gray-400">
+                    {solutionData?.mainUser.submissionTime 
+                      ? new Date(solutionData.mainUser.submissionTime).toLocaleTimeString()
+                      : "No time recorded"
+                    }
+                  </span>
                 </div>
               </div>
 
@@ -340,6 +347,16 @@ const SolutionDetailsPageUserName = () => {
                       `}>
                         {(match.similarity * 100).toFixed(1)}%
                       </Badge>
+                      <div className="text-xs text-gray-400 mt-1">
+                        {isUser1Searched 
+                          ? match.submission2Time 
+                            ? new Date(match.submission2Time).toLocaleTimeString()
+                            : "No time recorded"
+                          : match.submission1Time 
+                            ? new Date(match.submission1Time).toLocaleTimeString()
+                            : "No time recorded"
+                        }
+                      </div>
                     </div>
                     <div className="flex justify-center">
                       <CodeButton
@@ -384,6 +401,16 @@ const SolutionDetailsPageUserName = () => {
                         `}>
                           {(match.similarity * 100).toFixed(1)}%
                         </Badge>
+                      </div>
+                      <div className="text-xs text-gray-400 mt-1">
+                        {isUser1Searched 
+                          ? match.submission2Time 
+                            ? new Date(match.submission2Time).toLocaleTimeString()
+                            : "No time recorded"
+                          : match.submission1Time 
+                            ? new Date(match.submission1Time).toLocaleTimeString()
+                            : "No time recorded"
+                        }
                       </div>
                     </div>
                     <div className="flex justify-end">
