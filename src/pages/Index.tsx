@@ -16,7 +16,7 @@ const Index = () => {
     { id: "home", component: <HomeSection /> },
     { id: "why-us", component: <WhyUsSection /> },
     { id: "mission", component: <MissionSection /> },
-    { id: "about-us", component: <AboutUsSection /> },
+    // { id: "about-us", component: <AboutUsSection /> },
     { id: "faq", component: <FAQSection /> },
     { id: "contact", component: <ContactSection /> },
   ];
