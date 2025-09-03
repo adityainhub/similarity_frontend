@@ -16,7 +16,7 @@ const Index = () => {
     { id: "home", component: <HomeSection /> },
     { id: "why-us", component: <WhyUsSection /> },
     { id: "mission", component: <MissionSection /> },
-    // { id: "about-us", component: <AboutUsSection /> },
+    { id: "about-us", component: <AboutUsSection /> },
     { id: "faq", component: <FAQSection /> },
     { id: "contact", component: <ContactSection /> },
   ];
@@ -330,14 +330,14 @@ const AboutUsSection = () => {
 
           <div className="animate-fadeInRight">
             <TeamMember
-                name="Kumar Aditya"
-                role="Pre-Final Year @BMSCE"
-                secondaryRole="Aspiring Software Developer"
-                image="/uploads/websiteAboutUsKumar.jpeg"
-                linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
-                instagramUrl="https://www.instagram.com/k.aditya07/"
-                githubUrl="https://github.com/adityainhub"
-                twitterUrl="https://x.com/k07aditya"
+                name="Syed Saifullah Beigh"
+                role="Senior @ BMSCE"
+                secondaryRole="Samsung R&D Intern"
+                image="/uploads/websiteAboutUsSaif.jpg"
+                linkedinUrl="https://www.linkedin.com/in/saifullah-syed-8a4a7b275"
+                instagramUrl="https://www.instagram.com/icysaif"
+                githubUrl="https://github.com/icysaif7"
+                twitterUrl="https://x.com/numbinsan"
             />
           </div>
         </div>
