@@ -22,14 +22,14 @@ const AboutUsPage = () => {
             name="Vyom Goyal"
             role="Samsung R&D Intern"
             secondaryRole="ACM ICPC 2024 Regionalist"
-            image="/public/uploads/websiteAboutUsVyom.jpeg"
+            image="/uploads/websiteAboutUsVyom.jpeg"
           />
           
           <TeamMember 
-            name="Saifullah Beigh"
+            name="Syed Saifullah Beigh"
             role="Senior @ BMSCE"
             secondaryRole="Samsung R&D Intern"
-            image="/public/uploads/websiteAboutUsSaif.jpeg"
+            image="/uploads/websiteAboutUsSaif.jpg"
           />
         </div>
       </div>
