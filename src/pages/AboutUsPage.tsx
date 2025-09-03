@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -23,14 +22,14 @@ const AboutUsPage = () => {
             name="Vyom Goyal"
             role="Samsung R&D Intern"
             secondaryRole="ACM ICPC 2024 Regionalist"
-            image="/uploads/ffd81992-04bb-43ec-adfc-e3157efc5e08.png"
+            image="/public/uploads/websiteAboutUsVyom.jpeg"
           />
           
           <TeamMember 
-            name="Kumar Aditya"
-            role="3rd Year UG"
-            secondaryRole="Aspiring Backend Developer"
-            image="/uploads/ee8a7903-4877-4726-bd05-db654dc47c5f.png"
+            name="Saifullah Beigh"
+            role="Senior @ BMSCE"
+            secondaryRole="Samsung R&D Intern"
+            image="/public/uploads/websiteAboutUsSaif.jpeg"
           />
         </div>
       </div>
