@@ -331,13 +331,13 @@ const AboutUsSection = () => {
 
           <div className="animate-fadeInRight">
             <TeamMember
-                name="Vyom Goyal"
-                role="Upcoming SDE Intern @ Amazon"
-                secondaryRole="ACM ICPC 2024 Regionalist"
-                image="/uploads/websiteAboutUsVyom.jpeg"
-                linkedinUrl="https://www.linkedin.com/in/vyom-goyal-09ab5b246/"
+                name="Vasu Gupta"
+                role="Samsung R&D Intern"
+                secondaryRole="Final Year @BMSCE"
+                image="/uploads/websiteAboutUsVasu.jpeg"
+                linkedinUrl="https://www.linkedin.com/in/icvasu/"
                 instagramUrl="https://www.instagram.com/"
-                githubUrl="https://github.com/Vyom-26"
+                githubUrl="https://github.com/icvasu"
                 twitterUrl="https://x.com/"
             />
           </div>  

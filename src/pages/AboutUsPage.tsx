@@ -25,10 +25,10 @@ const AboutUsPage = () => {
             image="/uploads/websiteAboutUsSaif.jpg"
           />
            <TeamMember 
-            name="Vyom Goyal"
+            name="Vasu Gupta"
             role="Final Year UG"
             secondaryRole="Samsung R&D Intern"
-            image="/uploads/websiteAboutUsVyom.jpeg"
+            image="/uploads/websiteAboutUsVasu.jpeg"
           />
           <TeamMember 
             name="Kumar Aditya"
