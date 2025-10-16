@@ -318,14 +318,14 @@ const AboutUsSection = () => {
 
           <div className="animate-fadeInRight">
             <TeamMember
-                name="Syed Saifullah Beigh"
+                name="Akhil Amritesh"
                 role="Final Year @BMSCE"
-                secondaryRole="Samsung R&D Intern"
-                image="/uploads/websiteAboutUsSaif.jpg"
-                linkedinUrl="https://www.linkedin.com/in/saifullah-syed-8a4a7b275"
-                instagramUrl="https://www.instagram.com/icysaif"
-                githubUrl="https://github.com/icysaif7"
-                twitterUrl="https://x.com/numbinsan"
+                secondaryRole="Aspiring Software developer"
+                image="/uploads/websiteAboutUsAkhil.jpeg"
+                linkedinUrl="https://www.linkedin.com/in/akhil-amritesh/"
+                instagramUrl="https://www.instagram.com/"
+                githubUrl="https://github.com/Akhil04A"
+                twitterUrl="https://x.com/"
             />
           </div>
 
@@ -346,7 +346,7 @@ const AboutUsSection = () => {
             <TeamMember
                 name="Kumar Aditya"
                 role="Final Year @BMSCE"
-                secondaryRole="Aspiring Software Developer"
+                secondaryRole="Samsung R&D Intern"
                 image="/uploads/websiteAboutUsAditya.jpeg"
                 linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
                 instagramUrl="https://www.instagram.com/k.aditya07/"

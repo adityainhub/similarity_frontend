@@ -19,10 +19,10 @@ const AboutUsPage = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
           <TeamMember 
-            name="Syed Saifullah Beigh"
-            role="Final Year UG"
-            secondaryRole="Samsung R&D Intern"
-            image="/uploads/websiteAboutUsSaif.jpg"
+            name="Akhil Amritesh"
+            role="Final Year @BMSCE"
+            secondaryRole="Aspiring Software Developer"
+            image="/uploads/websiteAboutUsAkhil.jpg"
           />
            <TeamMember 
             name="Vasu Gupta"
@@ -32,8 +32,8 @@ const AboutUsPage = () => {
           />
           <TeamMember 
             name="Kumar Aditya"
-            role="Final Year UG"
-            secondaryRole="Aspiring Backend Developer"
+            role="Final Year @BMSCE"
+            secondaryRole="Samsung R&D Intern"
             image="websiteAboutUsAditya.jpeg"
           />
           
