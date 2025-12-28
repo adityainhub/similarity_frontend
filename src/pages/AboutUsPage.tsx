@@ -19,17 +19,12 @@ const AboutUsPage = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
           <TeamMember 
-            name="Akhil Amritesh"
-            role="Final Year @BMSCE"
-            secondaryRole="Aspiring Software Developer"
-            image="/uploads/websiteAboutUsAkhil.jpg"
+            name="Vyom Goyal"
+            role="Samsung R&D Intern"
+            secondaryRole="ACM ICPC 2024 Regionalist"
+            image="/uploads/websiteAboutUsVyom.jpeg"
           />
-           <TeamMember 
-            name="Vasu Gupta"
-            role="Final Year UG"
-            secondaryRole="Samsung R&D Intern"
-            image="/uploads/websiteAboutUsVasu.jpeg"
-          />
+
           <TeamMember 
             name="Kumar Aditya"
             role="Final Year @BMSCE"

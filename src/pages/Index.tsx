@@ -314,41 +314,27 @@ const AboutUsSection = () => {
           The People Behind The Magic
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-
-          <div className="animate-fadeInRight">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+          <div className="animate-fadeInLeft">
             <TeamMember
-                name="Akhil Amritesh"
-                role="Final Year @BMSCE"
-                secondaryRole="Aspiring Software developer"
-                image="/uploads/websiteAboutUsAkhil.jpeg"
-                linkedinUrl="https://www.linkedin.com/in/akhil-amritesh/"
-                instagramUrl="https://www.instagram.com/"
-                githubUrl="https://github.com/Akhil04A"
-                twitterUrl="https://x.com/"
+                name="Vyom Goyal"                
+                role="Upcoming SDE Intern at Amazon"
+                secondaryRole="ACM ICPC 2024 Regionalist"
+                image="/uploads/websiteAboutUsVyom.jpeg"               
+                linkedinUrl="https://www.linkedin.com/in/vyom-goyal-09ab5b246/"                
+                instagramUrl="https://www.instagram.com/vyom__goyal/"               
+                githubUrl="https://github.com/Vyom-26"              
+                twitterUrl="https://x.com/HelloVyom"              
             />
           </div>
 
           <div className="animate-fadeInRight">
             <TeamMember
-                name="Vasu Gupta"
-                role="Samsung R&D Intern"
-                secondaryRole="Final Year @BMSCE"
-                image="/uploads/websiteAboutUsVasu.jpeg"
-                linkedinUrl="https://www.linkedin.com/in/icvasu/"
-                instagramUrl="https://www.instagram.com/"
-                githubUrl="https://github.com/icvasu"
-                twitterUrl="https://x.com/"
-            />
-          </div>  
-
-          <div className="animate-fadeInLeft">
-            <TeamMember
                 name="Kumar Aditya"
                 role="Final Year @BMSCE"
                 secondaryRole="Samsung R&D Intern"
                 image="/uploads/websiteAboutUsAditya.jpeg"
-                linkedinUrl="https://www.linkedin.com/in/kumar-aditya-08b762251/"
+                linkedinUrl="https://www.linkedin.com/in/aditya1502/"
                 instagramUrl="https://www.instagram.com/k.aditya07/"
                 githubUrl="https://github.com/adityainhub"
                 twitterUrl="https://x.com/k07aditya"
@@ -396,6 +382,8 @@ const TeamMember = ({ name, role, secondaryRole, image, linkedinUrl, instagramUr
       </div>
   );
 };
+
+
 
 const FAQSection = () => {
   return (
